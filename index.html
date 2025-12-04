@@ -3,199 +3,409 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ekadasi Calendar - Recordatorios de Ayuno</title>
+  <title>Hoy es Ekadasi - Recordatorios de Ayuno</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --color-primary: #1a5f5a;
+      --color-secondary: #2d7a74;
+      --color-accent: #c9a962;
+      --color-cream: #faf6f0;
+      --color-warm: #f9ae9f;
+      --color-text: #3a3a3a;
+      --color-text-light: #666;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: var(--font-sans);
+      background: var(--color-cream);
+      color: var(--color-text);
       min-height: 100vh;
-      padding: 20px;
+      line-height: 1.6;
     }
+
     .container {
-      background: white;
-      border-radius: 20px;
-      padding: 40px;
-      max-width: 600px;
+      max-width: 1100px;
       margin: 0 auto;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      padding: 40px 20px;
     }
+
+    /* Header */
     .header {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 50px;
     }
-    .icon { font-size: 64px; margin-bottom: 20px; }
-    h1 { color: #333; margin-bottom: 10px; font-size: 28px; }
-    h2 { color: #333; margin: 30px 0 15px; font-size: 20px; border-bottom: 2px solid #667eea; padding-bottom: 8px; }
-    .subtitle { color: #666; font-size: 16px; }
-    .section { margin-bottom: 25px; }
-    .section p { color: #555; line-height: 1.6; margin-bottom: 10px; }
-    .whatsapp-box {
-      background: #dcf8c6;
-      border-radius: 12px;
-      padding: 20px;
-      margin: 15px 0;
+
+    .logo {
+      width: 140px;
+      height: 140px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      box-shadow: 0 4px 20px rgba(26, 95, 90, 0.15);
     }
-    .whatsapp-box .number {
-      font-size: 24px;
-      font-weight: bold;
-      color: #128C7E;
-      margin-bottom: 10px;
+
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
     }
-    .whatsapp-box .instructions { font-size: 14px; color: #333; }
-    .whatsapp-box .instructions ol { margin: 10px 0 0 20px; }
-    .whatsapp-box .instructions li { margin: 5px 0; }
-    .calendar-box {
-      background: #f8f9fa;
-      border-radius: 12px;
-      padding: 20px;
-      margin: 15px 0;
-    }
-    .calendar-box label {
-      display: block;
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
       font-weight: 600;
+      color: var(--color-primary);
       margin-bottom: 8px;
-      color: #333;
     }
-    .calendar-box select {
-      width: 100%;
-      padding: 12px;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      font-size: 16px;
-      margin-bottom: 15px;
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--color-text-light);
+      font-weight: 300;
+    }
+
+    /* Main Grid */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 50px;
+    }
+
+    @media (max-width: 768px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      h1 { font-size: 2rem; }
+
+      .logo {
+        width: 120px;
+        height: 120px;
+      }
+    }
+
+    /* Cards */
+    .card {
       background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(26, 95, 90, 0.08);
     }
-    .calendar-box select:focus { outline: none; border-color: #667eea; }
-    .btn {
-      display: inline-block;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+    .card h2 {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      color: var(--color-primary);
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--color-warm);
+    }
+
+    .card p {
+      color: var(--color-text-light);
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+    }
+
+    /* WhatsApp section */
+    .whatsapp-number {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
       color: white;
-      padding: 14px 28px;
-      border-radius: 30px;
-      font-size: 16px;
+      padding: 15px 20px;
+      border-radius: 8px;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .whatsapp-number .number {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .whatsapp-number .hint {
+      font-size: 0.85rem;
+      opacity: 0.9;
+      margin-top: 5px;
+    }
+
+    .btn {
+      display: block;
+      padding: 14px 24px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
       text-decoration: none;
-      border: none;
-      cursor: pointer;
-      width: 100%;
       text-align: center;
       transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      border: none;
     }
+
     .btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
     }
-    .btn-whatsapp { background: #25D366; }
-    .btn-whatsapp:hover { box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4); }
-    .instructions-list {
-      background: #f0f4ff;
-      border-radius: 12px;
-      padding: 20px;
-      margin: 15px 0;
+
+    .btn-whatsapp {
+      background: #25D366;
+      color: white;
     }
-    .instructions-list h4 { color: #667eea; margin-bottom: 10px; }
-    .instructions-list ol { margin-left: 20px; color: #555; }
-    .instructions-list li { margin: 8px 0; line-height: 1.5; }
-    .instructions-list code {
-      background: #e0e7ff;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 14px;
-      word-break: break-all;
+
+    .btn-whatsapp:hover {
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35);
     }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: white;
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 4px 15px rgba(26, 95, 90, 0.3);
+    }
+
     .commands {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 8px 15px;
-      margin: 10px 0;
+      margin-top: 20px;
+      font-size: 0.9rem;
     }
-    .commands dt { font-weight: 600; color: #667eea; }
-    .commands dd { color: #555; }
-    .source {
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 1px solid #eee;
-      font-size: 12px;
-      color: #999;
+
+    .commands dt {
+      font-weight: 700;
+      color: var(--color-secondary);
+      display: inline;
+    }
+
+    .commands dd {
+      display: inline;
+      color: var(--color-text-light);
+      margin-left: 5px;
+    }
+
+    .commands div {
+      margin: 8px 0;
+    }
+
+    /* Calendar section */
+    .calendar-form label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      color: var(--color-text);
+    }
+
+    .calendar-form select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: white;
+      color: var(--color-text);
+      margin-bottom: 15px;
+    }
+
+    .calendar-form select:focus {
+      outline: none;
+      border-color: var(--color-secondary);
+    }
+
+    .calendar-instructions {
+      background: var(--color-cream);
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 20px;
+      font-size: 0.85rem;
+    }
+
+    .calendar-instructions h4 {
+      font-size: 0.9rem;
+      color: var(--color-primary);
+      margin-bottom: 10px;
+    }
+
+    .calendar-instructions ol {
+      margin-left: 18px;
+      color: var(--color-text-light);
+    }
+
+    .calendar-instructions li {
+      margin: 6px 0;
+    }
+
+    .calendar-url {
+      margin-top: 12px;
+      padding: 10px;
+      background: white;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      word-break: break-all;
+      color: var(--color-text-light);
+      border: 1px solid #eee;
+    }
+
+    /* Reverencias */
+    .reverencias {
       text-align: center;
+      padding: 30px 20px;
+      max-width: 700px;
+      margin: 0 auto;
     }
-    .source a { color: #667eea; text-decoration: none; }
+
+    .reverencias p {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      color: var(--color-text-light);
+      font-style: italic;
+      line-height: 1.8;
+    }
+
+    /* Links */
+    .source-links {
+      text-align: center;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .source-links a {
+      display: inline-block;
+      color: var(--color-primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin: 0 15px;
+      padding: 5px 0;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .source-links a:hover {
+      border-bottom-color: var(--color-warm);
+    }
+
+    /* GitHub icon */
+    .github-link {
+      position: fixed;
+      bottom: 15px;
+      left: 15px;
+      opacity: 0.4;
+      transition: opacity 0.2s;
+    }
+
+    .github-link:hover {
+      opacity: 0.8;
+    }
+
+    .github-link svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--color-text);
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 25px 15px; }
+      .card { padding: 20px; }
+      .source-links a { display: block; margin: 8px 0; }
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <div class="icon">🙏</div>
-      <h1>Ekadasi Calendar</h1>
-      <p class="subtitle">Recordatorios de ayuno para practicantes Vaisnavas</p>
-    </div>
-
-    <h2>Bot de WhatsApp</h2>
-    <div class="section">
-      <p>Recibe notificaciones automáticas un día antes de cada Ekadasi y el horario exacto para romper el ayuno (paran).</p>
-      <div class="whatsapp-box">
-        <div class="number">+1 (980) 372-5205</div>
-        <div class="instructions">
-          <ol>
-            <li>Guarda este número en tus contactos</li>
-            <li>Envía un mensaje de WhatsApp con cualquier texto</li>
-            <li>Selecciona tu ciudad para suscribirte</li>
-          </ol>
-        </div>
+    <header class="header">
+      <div class="logo">
+        <img src="assets/logo.png" alt="Hoy es Ekadasi">
       </div>
-      <a href="https://wa.me/19803725205?text=Hola" class="btn btn-whatsapp" target="_blank">
-        Abrir WhatsApp
-      </a>
-      <div class="instructions-list" style="margin-top: 20px;">
-        <h4>Comandos disponibles</h4>
+      <h1>Hoy es Ekadasi</h1>
+      <p class="subtitle">Recordatorios de ayuno para practicantes Vaisnavas</p>
+    </header>
+
+    <div class="main-grid">
+      <div class="card">
+        <h2>Bot de WhatsApp</h2>
+        <p>Recibe notificaciones automáticas un día antes de cada Ekadasi y el horario exacto para romper el ayuno (paran).</p>
+
+        <div class="whatsapp-number">
+          <div class="number">+1 (980) 372-5205</div>
+          <div class="hint">Guarda este número y envía un mensaje</div>
+        </div>
+
+        <a href="https://wa.me/19803725205?text=Hola" class="btn btn-whatsapp" target="_blank">
+          Abrir WhatsApp
+        </a>
+
         <dl class="commands">
-          <dt>PROXIMO</dt>
-          <dd>Ver el próximo Ekadasi</dd>
-          <dt>STOP</dt>
-          <dd>Cancelar suscripción</dd>
+          <div><dt>PROXIMO</dt><dd>— Ver el próximo Ekadasi</dd></div>
+          <div><dt>STOP</dt><dd>— Cancelar suscripción</dd></div>
         </dl>
       </div>
+
+      <div class="card">
+        <h2>Calendario (.ics)</h2>
+        <p>Suscríbete al calendario de Ekadasis en tu aplicación favorita. Se sincroniza automáticamente.</p>
+
+        <div class="calendar-form">
+          <label for="city">Tu ciudad:</label>
+          <select id="city">
+            <option value="America/Mexico_City">Ciudad de México</option>
+            <option value="America/Mexico_City">Guadalajara</option>
+            <option value="America/Mexico_City">Monterrey</option>
+          </select>
+          <button class="btn btn-primary" onclick="downloadCalendar()">
+            Descargar Calendario
+          </button>
+        </div>
+
+        <div class="calendar-instructions">
+          <h4>Cómo suscribirse</h4>
+          <ol>
+            <li><strong>Google Calendar:</strong> Añadir calendario → Desde URL</li>
+            <li><strong>iPhone:</strong> Ajustes → Calendario → Añadir suscripción</li>
+            <li><strong>Outlook:</strong> Suscribirse desde la web</li>
+          </ol>
+          <div class="calendar-url">
+            https://ekadasi-calendar.blitzkriegfc.workers.dev/calendar.ics?tz=America/Mexico_City
+          </div>
+        </div>
+      </div>
     </div>
 
-    <h2>Suscribirse al Calendario</h2>
-    <div class="section">
-      <p>Agrega el calendario de Ekadasis a tu aplicación de calendario favorita. Se sincroniza automáticamente.</p>
-      <div class="calendar-box">
-        <label for="city">Selecciona tu ciudad:</label>
-        <select id="city">
-          <option value="Mexico City, Mexico">Ciudad de México</option>
-          <option value="Guadalajara, Mexico">Guadalajara</option>
-          <option value="Monterrey, Mexico">Monterrey</option>
-        </select>
-        <button class="btn" onclick="downloadCalendar()">
-          Descargar Calendario (.ics)
-        </button>
-      </div>
-      <div class="instructions-list">
-        <h4>Cómo suscribirse (actualización automática)</h4>
-        <ol>
-          <li><strong>Google Calendar:</strong> Configuración → Añadir calendario → Desde URL → Pegar la URL</li>
-          <li><strong>iPhone/iPad:</strong> Ajustes → Calendario → Cuentas → Añadir cuenta → Otro → Añadir suscripción</li>
-          <li><strong>Outlook:</strong> Agregar calendario → Suscribirse desde la web</li>
-        </ol>
-        <p style="margin-top: 15px; font-size: 14px;">
-          <strong>URL del calendario:</strong><br>
-          <code>https://ekadasi-calendar.blitzkriegfc.workers.dev/calendar.ics?tz=America/Mexico_City</code>
-        </p>
-      </div>
+    <div class="source-links">
+      <a href="https://www.purebhakti.com/resources/vaisnava-calendar" target="_blank">Pure Bhakti</a>
+      <a href="https://www.visuddhagauravani.com/" target="_blank">Śrī Kṛṣṇa Balarāma Mandir</a>
     </div>
 
-    <div class="source">
-      Datos del calendario: <a href="https://www.purebhakti.com/resources/vaisnava-calendar" target="_blank">Pure Bhakti - Śrī Caitanya Pañjikā</a>
-      <br><br>
-      <a href="https://github.com/vicrodh/ekadasi-calendar" target="_blank">GitHub</a>
+    <div class="reverencias">
+      <p>
+        Ofrezco mis humildes reverencias a los pies de loto de<br>
+        Śrī Śrīmad Bhaktivedānta Nārāyaṇa Gosvāmī Mahārāja,<br>
+        a Śrīpad BV Madhusūdana Mahārāja<br>
+        y a todos los vaiṣṇavas de la misión de Śrī Gauḍīya Vedānta Samiti.
+      </p>
     </div>
   </div>
 
+  <a href="https://github.com/vicrodh/ekadasi-calendar" class="github-link" target="_blank" title="Ver código fuente">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+    </svg>
+  </a>
+
   <script>
     const API_BASE = 'https://ekadasi-calendar.blitzkriegfc.workers.dev';
+
     function downloadCalendar() {
-      const url = `${API_BASE}/calendar.ics?tz=America/Mexico_City`;
+      const tz = document.getElementById('city').value;
+      const url = `${API_BASE}/calendar.ics?tz=${encodeURIComponent(tz)}`;
       window.open(url, '_blank');
     }
   </script>
