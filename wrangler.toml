@@ -2,6 +2,10 @@ name = "ekadasi-calendar"
 main = "src/api/index.ts"
 compatibility_date = "2024-12-01"
 
+routes = [
+  { pattern = "api.ekadasi.bhaktilatam.com/*", zone_name = "bhaktilatam.com" }
+]
+
 [vars]
 ENVIRONMENT = "production"
 
