@@ -230,10 +230,11 @@
       width: 100%;
       padding: 12px;
       border: 1px solid #ddd;
-      border-radius: 8px 8px 0 0;
+      border-radius: 8px;
       font-size: 1rem;
       background: white;
       color: var(--color-text);
+      margin-bottom: 10px;
     }
 
     .searchable-select input:focus {
@@ -243,27 +244,23 @@
 
     .searchable-select select {
       width: 100%;
+      padding: 12px;
       border: 1px solid #ddd;
-      border-top: none;
-      border-radius: 0 0 8px 8px;
-      font-size: 0.9rem;
+      border-radius: 8px;
+      font-size: 1rem;
       background: white;
-      margin-bottom: 0;
+      color: var(--color-text);
+      cursor: pointer;
     }
 
-    .searchable-select select option {
-      padding: 8px 12px;
-    }
-
-    .searchable-select select option:checked {
-      background: var(--color-primary);
-      color: white;
+    .searchable-select select:focus {
+      outline: none;
+      border-color: var(--color-secondary);
     }
 
     .searchable-select select optgroup {
       font-weight: 600;
       color: var(--color-primary);
-      padding: 8px 0 4px;
     }
 
     .calendar-instructions {
@@ -518,7 +515,7 @@
           <label for="city-search" data-i18n="city_label">Tu ciudad:</label>
           <div class="searchable-select">
             <input type="text" id="city-search" placeholder="Buscar ciudad..." autocomplete="off">
-            <select id="city" size="6">
+            <select id="city">
               <optgroup label="México - Principales">
                 <option value="America/Mexico_City" data-search="ciudad mexico cdmx df">Ciudad de México (CDMX)</option>
                 <option value="America/Mexico_City" data-search="guadalajara jalisco">Guadalajara</option>
