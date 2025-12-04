@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Build
+dist/
+.wrangler/
+
+# Environment
+.env
+.env.local
+.dev.vars
+
+# Turso
+*.db
+*.db-journal
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Drizzle
+drizzle/meta/
+
+# Playwright
+playwright-report/
+test-results/

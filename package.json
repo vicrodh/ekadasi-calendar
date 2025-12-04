@@ -1,0 +1,28 @@
+{
+  "name": "ekadasi-calendar",
+  "version": "1.0.0",
+  "description": "Bot de WhatsApp y calendario iCal para recordatorios de Ekadasi (Pure Bhakti)",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "scrape": "bun run src/scraper/index.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "bun run scripts/migrate.ts",
+    "db:studio": "drizzle-kit studio"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.14.0",
+    "drizzle-orm": "^0.38.0",
+    "hono": "^4.6.0",
+    "ical-generator": "^8.0.0",
+    "twilio": "^5.0.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241127.0",
+    "drizzle-kit": "^0.30.0",
+    "playwright": "^1.49.0",
+    "typescript": "^5.7.0",
+    "wrangler": "^3.90.0"
+  }
+}
