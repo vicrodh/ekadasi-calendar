@@ -34,8 +34,32 @@ export const notifications = sqliteTable("notifications", {
   sentAt: text("sent_at").default("CURRENT_TIMESTAMP"),
 });
 
+// Tabla de suscriptores de Telegram
+export const telegramSubscribers = sqliteTable("telegram_subscribers", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  chatId: text("chat_id").notNull().unique(), // Telegram chat ID
+  username: text("username"), // @username (opcional)
+  firstName: text("first_name"), // Nombre del usuario
+  timezone: text("timezone").notNull().default("America/Mexico_City"),
+  language: text("language").notNull().default("es"), // "es" | "en"
+  active: integer("active", { mode: "boolean" }).default(true),
+  createdAt: text("created_at").default("CURRENT_TIMESTAMP"),
+  lastNotified: text("last_notified"),
+});
+
+// Tabla de notificaciones de Telegram
+export const telegramNotifications = sqliteTable("telegram_notifications", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  subscriberId: integer("subscriber_id").references(() => telegramSubscribers.id),
+  ekadaisiId: integer("ekadasi_id").references(() => ekadasis.id),
+  type: text("type").notNull(), // "reminder" | "paran"
+  sentAt: text("sent_at").default("CURRENT_TIMESTAMP"),
+});
+
 // Tipos exportados
 export type Ekadasi = typeof ekadasis.$inferSelect;
 export type NewEkadasi = typeof ekadasis.$inferInsert;
 export type Subscriber = typeof subscribers.$inferSelect;
 export type NewSubscriber = typeof subscribers.$inferInsert;
+export type TelegramSubscriber = typeof telegramSubscribers.$inferSelect;
+export type NewTelegramSubscriber = typeof telegramSubscribers.$inferInsert;

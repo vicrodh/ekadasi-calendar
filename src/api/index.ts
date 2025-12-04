@@ -3,9 +3,10 @@ import { cors } from "hono/cors";
 import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
 import { eq, and, gte, desc } from "drizzle-orm";
-import { ekadasis, subscribers } from "../db/schema.js";
+import { ekadasis, subscribers, telegramSubscribers } from "../db/schema.js";
 import { generateIcal } from "../ical/generator.js";
 import { handleWhatsAppWebhook, sendNotifications } from "../bot/whatsapp.js";
+import { handleTelegramWebhook, sendTelegramNotifications } from "../bot/telegram.js";
 
 type Bindings = {
   TURSO_DATABASE_URL: string;
@@ -13,6 +14,7 @@ type Bindings = {
   TWILIO_ACCOUNT_SID: string;
   TWILIO_AUTH_TOKEN: string;
   TWILIO_WHATSAPP_FROM: string;
+  TELEGRAM_BOT_TOKEN: string;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -37,7 +39,8 @@ app.get("/", (c) => {
     endpoints: {
       calendar: "/api/ekadasi?tz=America/Mexico_City",
       ical: "/calendar.ics?tz=America/Mexico_City",
-      webhook: "/webhook/whatsapp",
+      whatsapp: "/webhook/whatsapp",
+      telegram: "/webhook/telegram",
     },
   });
 });
@@ -127,6 +130,28 @@ app.post("/webhook/whatsapp", async (c) => {
   });
 });
 
+// POST /webhook/telegram - Recibir mensajes de Telegram
+app.post("/webhook/telegram", async (c) => {
+  const db = getDb(c.env);
+  const update = await c.req.json();
+
+  await handleTelegramWebhook(update, db, c.env);
+
+  // Telegram espera 200 OK
+  return c.json({ ok: true });
+});
+
+// GET /telegram/setup - Registrar webhook con Telegram (llamar una vez)
+app.get("/telegram/setup", async (c) => {
+  const webhookUrl = "https://ekadasi-api.bhaktilatam.com/webhook/telegram";
+  const url = `https://api.telegram.org/bot${c.env.TELEGRAM_BOT_TOKEN}/setWebhook?url=${encodeURIComponent(webhookUrl)}`;
+
+  const response = await fetch(url);
+  const result = await response.json();
+
+  return c.json(result);
+});
+
 // POST /cron/notify - Llamado por GitHub Actions para enviar notificaciones
 app.post("/cron/notify", async (c) => {
   // Verificar secret para proteger el endpoint
@@ -136,27 +161,51 @@ app.post("/cron/notify", async (c) => {
   }
 
   const db = getDb(c.env);
-  const result = await sendNotifications(db, c.env);
 
-  return c.json(result);
+  // Enviar notificaciones de WhatsApp
+  const whatsappResult = await sendNotifications(db, c.env);
+
+  // Enviar notificaciones de Telegram
+  const telegramResult = await sendTelegramNotifications(db, c.env);
+
+  return c.json({
+    whatsapp: whatsappResult,
+    telegram: telegramResult,
+  });
 });
 
 // GET /api/subscribers - Listar suscriptores (para admin)
 app.get("/api/subscribers", async (c) => {
   const db = getDb(c.env);
 
-  const subs = await db
+  const whatsappSubs = await db
     .select()
     .from(subscribers)
     .where(eq(subscribers.active, true));
 
+  const telegramSubs = await db
+    .select()
+    .from(telegramSubscribers)
+    .where(eq(telegramSubscribers.active, true));
+
   return c.json({
-    count: subs.length,
-    subscribers: subs.map((s) => ({
-      phone: s.phone.replace(/\d{4}$/, "****"), // Ocultar últimos 4 dígitos
-      timezone: s.timezone,
-      createdAt: s.createdAt,
-    })),
+    whatsapp: {
+      count: whatsappSubs.length,
+      subscribers: whatsappSubs.map((s) => ({
+        phone: s.phone.replace(/\d{4}$/, "****"),
+        timezone: s.timezone,
+        createdAt: s.createdAt,
+      })),
+    },
+    telegram: {
+      count: telegramSubs.length,
+      subscribers: telegramSubs.map((s) => ({
+        username: s.username ? `@${s.username}` : s.firstName || "Anonymous",
+        timezone: s.timezone,
+        language: s.language,
+        createdAt: s.createdAt,
+      })),
+    },
   });
 });
 
