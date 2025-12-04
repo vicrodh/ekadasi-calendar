@@ -9,6 +9,10 @@ routes = [
 [vars]
 ENVIRONMENT = "production"
 
+# Cron triggers - ejecutar notificaciones cada hora
+[triggers]
+crons = ["0 * * * *"]
+
 # Turso database - configurar después de crear la DB
 # [env.production.vars]
 # TURSO_DATABASE_URL = "libsql://tu-db.turso.io"

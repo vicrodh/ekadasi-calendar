@@ -209,4 +209,18 @@ app.get("/api/subscribers", async (c) => {
   });
 });
 
-export default app;
+// Handler para Cloudflare Cron Triggers
+export default {
+  fetch: app.fetch,
+  async scheduled(event: ScheduledEvent, env: Bindings, ctx: ExecutionContext) {
+    const client = createClient({
+      url: env.TURSO_DATABASE_URL,
+      authToken: env.TURSO_AUTH_TOKEN,
+    });
+    const db = drizzle(client);
+
+    // Enviar notificaciones de WhatsApp y Telegram
+    await sendNotifications(db, env);
+    await sendTelegramNotifications(db, env);
+  },
+};
