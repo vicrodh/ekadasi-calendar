@@ -10,72 +10,194 @@
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       padding: 20px;
     }
     .container {
       background: white;
       border-radius: 20px;
       padding: 40px;
-      max-width: 500px;
-      text-align: center;
+      max-width: 600px;
+      margin: 0 auto;
       box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
     }
     .icon { font-size: 64px; margin-bottom: 20px; }
     h1 { color: #333; margin-bottom: 10px; font-size: 28px; }
-    .subtitle { color: #666; margin-bottom: 30px; font-size: 16px; }
-    .features {
-      text-align: left;
+    h2 { color: #333; margin: 30px 0 15px; font-size: 20px; border-bottom: 2px solid #667eea; padding-bottom: 8px; }
+    .subtitle { color: #666; font-size: 16px; }
+    .section { margin-bottom: 25px; }
+    .section p { color: #555; line-height: 1.6; margin-bottom: 10px; }
+    .whatsapp-box {
+      background: #dcf8c6;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 15px 0;
+    }
+    .whatsapp-box .number {
+      font-size: 24px;
+      font-weight: bold;
+      color: #128C7E;
+      margin-bottom: 10px;
+    }
+    .whatsapp-box .instructions { font-size: 14px; color: #333; }
+    .whatsapp-box .instructions ol { margin: 10px 0 0 20px; }
+    .whatsapp-box .instructions li { margin: 5px 0; }
+    .calendar-box {
       background: #f8f9fa;
       border-radius: 12px;
       padding: 20px;
-      margin-bottom: 30px;
+      margin: 15px 0;
     }
-    .features h3 { color: #333; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
-    .features ul { list-style: none; }
-    .features li { padding: 8px 0; color: #555; display: flex; align-items: center; gap: 10px; }
-    .features li::before { content: "✓"; color: #667eea; font-weight: bold; }
-    .badge {
+    .calendar-box label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #333;
+    }
+    .calendar-box select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-bottom: 15px;
+      background: white;
+    }
+    .calendar-box select:focus { outline: none; border-color: #667eea; }
+    .btn {
       display: inline-block;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
-      padding: 12px 24px;
+      padding: 14px 28px;
       border-radius: 30px;
-      font-size: 14px;
+      font-size: 16px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+    .btn-whatsapp { background: #25D366; }
+    .btn-whatsapp:hover { box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4); }
+    .instructions-list {
+      background: #f0f4ff;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 15px 0;
+    }
+    .instructions-list h4 { color: #667eea; margin-bottom: 10px; }
+    .instructions-list ol { margin-left: 20px; color: #555; }
+    .instructions-list li { margin: 8px 0; line-height: 1.5; }
+    .instructions-list code {
+      background: #e0e7ff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 14px;
+      word-break: break-all;
+    }
+    .commands {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8px 15px;
+      margin: 10px 0;
+    }
+    .commands dt { font-weight: 600; color: #667eea; }
+    .commands dd { color: #555; }
     .source {
       margin-top: 30px;
       padding-top: 20px;
       border-top: 1px solid #eee;
       font-size: 12px;
       color: #999;
+      text-align: center;
     }
     .source a { color: #667eea; text-decoration: none; }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="icon">🙏</div>
-    <h1>Ekadasi Calendar</h1>
-    <p class="subtitle">Recordatorios de ayuno para practicantes Vaisnavas</p>
-
-    <div class="features">
-      <h3>Funcionalidades</h3>
-      <ul>
-        <li>Notificaciones por WhatsApp un día antes del Ekadasi</li>
-        <li>Horarios precisos de Paran (ruptura de ayuno)</li>
-        <li>Calendario iCal sincronizable con tu móvil</li>
-        <li>Soporte para múltiples zonas horarias</li>
-      </ul>
+    <div class="header">
+      <div class="icon">🙏</div>
+      <h1>Ekadasi Calendar</h1>
+      <p class="subtitle">Recordatorios de ayuno para practicantes Vaisnavas</p>
     </div>
 
-    <span class="badge">Próximamente</span>
+    <h2>Bot de WhatsApp</h2>
+    <div class="section">
+      <p>Recibe notificaciones automáticas un día antes de cada Ekadasi y el horario exacto para romper el ayuno (paran).</p>
+      <div class="whatsapp-box">
+        <div class="number">+1 (980) 372-5205</div>
+        <div class="instructions">
+          <ol>
+            <li>Guarda este número en tus contactos</li>
+            <li>Envía un mensaje de WhatsApp con cualquier texto</li>
+            <li>Selecciona tu ciudad para suscribirte</li>
+          </ol>
+        </div>
+      </div>
+      <a href="https://wa.me/19803725205?text=Hola" class="btn btn-whatsapp" target="_blank">
+        Abrir WhatsApp
+      </a>
+      <div class="instructions-list" style="margin-top: 20px;">
+        <h4>Comandos disponibles</h4>
+        <dl class="commands">
+          <dt>PROXIMO</dt>
+          <dd>Ver el próximo Ekadasi</dd>
+          <dt>STOP</dt>
+          <dd>Cancelar suscripción</dd>
+        </dl>
+      </div>
+    </div>
+
+    <h2>Suscribirse al Calendario</h2>
+    <div class="section">
+      <p>Agrega el calendario de Ekadasis a tu aplicación de calendario favorita. Se sincroniza automáticamente.</p>
+      <div class="calendar-box">
+        <label for="city">Selecciona tu ciudad:</label>
+        <select id="city">
+          <option value="Mexico City, Mexico">Ciudad de México</option>
+          <option value="Guadalajara, Mexico">Guadalajara</option>
+          <option value="Monterrey, Mexico">Monterrey</option>
+        </select>
+        <button class="btn" onclick="downloadCalendar()">
+          Descargar Calendario (.ics)
+        </button>
+      </div>
+      <div class="instructions-list">
+        <h4>Cómo suscribirse (actualización automática)</h4>
+        <ol>
+          <li><strong>Google Calendar:</strong> Configuración → Añadir calendario → Desde URL → Pegar la URL</li>
+          <li><strong>iPhone/iPad:</strong> Ajustes → Calendario → Cuentas → Añadir cuenta → Otro → Añadir suscripción</li>
+          <li><strong>Outlook:</strong> Agregar calendario → Suscribirse desde la web</li>
+        </ol>
+        <p style="margin-top: 15px; font-size: 14px;">
+          <strong>URL del calendario:</strong><br>
+          <code>https://ekadasi-calendar.blitzkriegfc.workers.dev/calendar.ics?tz=America/Mexico_City</code>
+        </p>
+      </div>
+    </div>
 
     <div class="source">
-      Datos del calendario: <a href="https://www.purebhakti.com/resources/vaisnava-calendar" target="_blank">Pure Bhakti - Caitanya Pañjikā</a>
+      Datos del calendario: <a href="https://www.purebhakti.com/resources/vaisnava-calendar" target="_blank">Pure Bhakti - Śrī Caitanya Pañjikā</a>
+      <br><br>
+      <a href="https://github.com/vicrodh/ekadasi-calendar" target="_blank">GitHub</a>
     </div>
   </div>
+
+  <script>
+    const API_BASE = 'https://ekadasi-calendar.blitzkriegfc.workers.dev';
+    function downloadCalendar() {
+      const url = `${API_BASE}/calendar.ics?tz=America/Mexico_City`;
+      window.open(url, '_blank');
+    }
+  </script>
 </body>
 </html>
