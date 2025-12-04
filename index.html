@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <title data-i18n="title">Hoy es Ekadasi - Recordatorios de Ayuno</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,18 +22,27 @@
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    /* Prevenir scroll horizontal en dispositivos con zoom de accesibilidad */
+    html {
+      overflow-x: hidden;
+      max-width: 100vw;
+    }
+
     body {
       font-family: var(--font-sans);
       background: var(--color-cream);
       color: var(--color-text);
       min-height: 100vh;
       line-height: 1.6;
+      overflow-x: hidden;
+      max-width: 100%;
     }
 
     .container {
       max-width: 1100px;
       margin: 0 auto;
       padding: 40px 20px;
+      overflow-x: hidden;
     }
 
     /* Header */
@@ -615,6 +624,60 @@
       .container { padding: 25px 15px; }
       .card { padding: 20px; }
       .source-links a { display: block; margin: 8px 0; }
+    }
+
+    /* Soporte para zoom de accesibilidad iOS */
+    @media (max-width: 480px) {
+      .container { padding: 20px 12px; }
+      .card { padding: 18px 15px; }
+
+      h1 { font-size: 1.75rem; }
+      .subtitle { font-size: 1rem; }
+
+      .logo { width: 100px; height: 100px; }
+
+      .whatsapp-number, .telegram-username {
+        padding: 12px 15px;
+      }
+
+      .whatsapp-number .number,
+      .telegram-username .username {
+        font-size: 1.2rem;
+      }
+
+      .btn { padding: 12px 18px; font-size: 0.95rem; }
+
+      .commands { font-size: 0.85rem; }
+      .commands dt { display: block; margin-bottom: 2px; }
+      .commands dd { margin-left: 0; display: block; margin-bottom: 8px; }
+
+      .calendar-url { font-size: 0.7rem; }
+
+      .fasting-rules { padding: 20px 15px; }
+      .fasting-rules h2 { font-size: 1.3rem; }
+      .fasting-rules h3 { font-size: 1.1rem; }
+      .fasting-rules p, .fasting-rules ul { font-size: 0.9rem; }
+
+      .lang-toggle { top: 10px; right: 10px; }
+      .lang-toggle button { padding: 4px 10px; font-size: 0.8rem; }
+    }
+
+    /* Extra pequeño - para zoom muy agresivo */
+    @media (max-width: 360px) {
+      .container { padding: 15px 10px; }
+      .card { padding: 15px 12px; }
+
+      h1 { font-size: 1.5rem; }
+      .logo { width: 80px; height: 80px; }
+
+      .whatsapp-number .number,
+      .telegram-username .username {
+        font-size: 1rem;
+        word-break: break-all;
+      }
+
+      .calendar-instructions { padding: 12px; }
+      .calendar-instructions ol { margin-left: 15px; }
     }
   </style>
 </head>
