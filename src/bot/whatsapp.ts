@@ -8,11 +8,19 @@ type Env = {
   TWILIO_WHATSAPP_FROM: string;
 };
 
-const TIMEZONE_OPTIONS: Record<string, string> = {
-  "1": "America/Mexico_City",
-  "2": "America/Bogota",
-  "3": "America/Buenos_Aires",
-  "4": "America/Sao_Paulo",
+// Template SIDs de Twilio
+const TEMPLATES = {
+  ekadasi_reminder: "HX8d07acbf35e61527c1fcba8e2e8da630",
+  paran_reminder: "HX9b7443506e6fabf7b9073579c07e80b7",
+  ekadasi_postponed: "HXf43a00f3c10064a7acab4110d8ef9d7f",
+};
+
+// Ciudades de México disponibles
+const LOCATION_OPTIONS: Record<string, { tz: string; label: string }> = {
+  "1": { tz: "America/Mexico_City", label: "CDMX" },
+  "2": { tz: "America/Mexico_City", label: "Guadalajara" },
+  "3": { tz: "America/Mexico_City", label: "Monterrey" },
+  "4": { tz: "America/Mexico_City", label: "Otra ciudad de México" },
 };
 
 /**
@@ -23,10 +31,9 @@ export async function handleWhatsAppWebhook(
   db: LibSQLDatabase,
   env: Env
 ): Promise<string> {
-  const from = body.From as string; // "whatsapp:+525512345678"
+  const from = body.From as string;
   const message = ((body.Body as string) || "").trim().toUpperCase();
 
-  // Buscar si ya está suscrito
   const existingSubscriber = await db
     .select()
     .from(subscribers)
@@ -73,37 +80,34 @@ export async function handleWhatsAppWebhook(
       responseText = "No hay información de próximos ekadasis. Por favor intenta más tarde.";
     }
   }
-  // Selección de timezone (1, 2, 3, 4)
-  else if (TIMEZONE_OPTIONS[message]) {
-    const selectedTz = TIMEZONE_OPTIONS[message];
+  // Selección de ubicación (1, 2, 3, 4)
+  else if (LOCATION_OPTIONS[message]) {
+    const selected = LOCATION_OPTIONS[message];
 
     if (isSubscribed) {
-      // Actualizar timezone
       await db
         .update(subscribers)
-        .set({ timezone: selectedTz })
+        .set({ timezone: selected.tz })
         .where(eq(subscribers.phone, from));
     } else {
-      // Nueva suscripción
       await db.insert(subscribers).values({
         phone: from,
-        timezone: selectedTz,
+        timezone: selected.tz,
         active: true,
       });
     }
 
-    responseText = `✅ ¡Suscripción confirmada!\n\n🌍 Zona horaria: ${selectedTz}\n\n*Recibirás:*\n• Recordatorio 1 día antes de Ekadasi\n• Horario de paran (ruptura de ayuno)\n\n*Comandos:*\n• PROXIMO - Ver próximo Ekadasi\n• STOP - Cancelar suscripción\n\nHare Krishna! 🙏`;
+    responseText = `✅ ¡Suscripción confirmada!\n\n📍 Ubicación: ${selected.label}\n\n*Recibirás:*\n• Recordatorio 1 día antes de Ekadasi\n• Horario de paran (ruptura de ayuno)\n\n*Comandos:*\n• PROXIMO - Ver próximo Ekadasi\n• STOP - Cancelar suscripción\n\nHare Krishna! 🙏`;
   }
   // Mensaje inicial o cualquier otro
   else {
     if (isSubscribed) {
-      responseText = `🙏 Hare Krishna!\n\nYa estás suscrito (${existingSubscriber[0].timezone}).\n\n*Comandos:*\n• PROXIMO - Ver próximo Ekadasi\n• STOP - Cancelar suscripción\n• 1-4 - Cambiar zona horaria`;
+      responseText = `🙏 Hare Krishna!\n\nYa estás suscrito.\n\n*Comandos:*\n• PROXIMO - Ver próximo Ekadasi\n• STOP - Cancelar suscripción`;
     } else {
-      responseText = `🙏 Hare Krishna!\n\nSoy el bot de recordatorios de Ekadasi (Pure Bhakti).\n\n*Selecciona tu zona horaria:*\n\n1️⃣ México (CDMX)\n2️⃣ Colombia/Perú\n3️⃣ Argentina\n4️⃣ Brasil\n\nResponde con el número de tu opción.`;
+      responseText = `🙏 Hare Krishna!\n\nSoy el bot de recordatorios de Ekadasi (Pure Bhakti).\n\n*Selecciona tu ciudad:*\n\n1️⃣ CDMX\n2️⃣ Guadalajara\n3️⃣ Monterrey\n4️⃣ Otra ciudad de México\n\nResponde con el número.`;
     }
   }
 
-  // Respuesta en formato TwiML
   return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
   <Message>${escapeXml(responseText)}</Message>
@@ -111,7 +115,7 @@ export async function handleWhatsAppWebhook(
 }
 
 /**
- * Envía notificaciones a todos los suscriptores
+ * Envía notificaciones a todos los suscriptores usando templates
  * Llamado por el cron diario
  */
 export async function sendNotifications(
@@ -121,7 +125,6 @@ export async function sendNotifications(
   const today = new Date().toISOString().split("T")[0];
   const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split("T")[0];
 
-  // Obtener suscriptores activos
   const activeSubscribers = await db
     .select()
     .from(subscribers)
@@ -131,7 +134,7 @@ export async function sendNotifications(
   let errors = 0;
 
   for (const subscriber of activeSubscribers) {
-    // Buscar ekadasi de mañana para la timezone del usuario
+    // Buscar ekadasi de mañana
     const tomorrowEkadasi = await db
       .select()
       .from(ekadasis)
@@ -146,7 +149,6 @@ export async function sendNotifications(
     if (tomorrowEkadasi.length > 0) {
       const e = tomorrowEkadasi[0];
 
-      // Verificar si ya se envió esta notificación
       const alreadySent = await db
         .select()
         .from(notifications)
@@ -160,12 +162,20 @@ export async function sendNotifications(
         .limit(1);
 
       if (alreadySent.length === 0) {
-        const message = `🔔 *Mañana es Ekadasi*\n\n📅 ${e.name}\n🗓️ ${e.date}\n⏰ Ayuno desde la madrugada\n\n🍽️ Paran: ${e.paranStart} - ${e.paranEnd}${e.isDvadasi ? "\n\n📝 Mañana es Dvādaśī - romper con granos" : ""}\n\nHare Krishna! 🙏`;
-
         try {
-          await sendTwilioMessage(subscriber.phone, message, env);
+          // Usar template ekadasi_reminder
+          // Variables: {{1}} = nombre y fecha, {{2}} = hora inicio, {{3}} = hora fin
+          await sendTwilioTemplate(
+            subscriber.phone,
+            TEMPLATES.ekadasi_reminder,
+            [
+              `${e.name} - ${formatDate(e.date)}`,
+              e.paranStart,
+              e.paranEnd,
+            ],
+            env
+          );
 
-          // Registrar notificación enviada
           await db.insert(notifications).values({
             subscriberId: subscriber.id,
             ekadaisiId: e.id,
@@ -174,7 +184,7 @@ export async function sendNotifications(
 
           sent++;
         } catch (error) {
-          console.error(`Error enviando a ${subscriber.phone}:`, error);
+          console.error(`Error enviando reminder a ${subscriber.phone}:`, error);
           errors++;
         }
       }
@@ -208,10 +218,15 @@ export async function sendNotifications(
         .limit(1);
 
       if (alreadySent.length === 0) {
-        const message = `🍽️ *Hoy puedes romper el ayuno*\n\n⏰ Ventana de paran: ${e.paranStart} - ${e.paranEnd}${e.isDvadasi ? "\n\n📝 Hoy es Dvādaśī - romper con granos" : ""}\n\nHare Krishna! 🙏`;
-
         try {
-          await sendTwilioMessage(subscriber.phone, message, env);
+          // Usar template paran_reminder
+          // Variables: {{1}} = hora inicio, {{2}} = hora fin
+          await sendTwilioTemplate(
+            subscriber.phone,
+            TEMPLATES.paran_reminder,
+            [e.paranStart, e.paranEnd],
+            env
+          );
 
           await db.insert(notifications).values({
             subscriberId: subscriber.id,
@@ -221,7 +236,7 @@ export async function sendNotifications(
 
           sent++;
         } catch (error) {
-          console.error(`Error enviando a ${subscriber.phone}:`, error);
+          console.error(`Error enviando paran a ${subscriber.phone}:`, error);
           errors++;
         }
       }
@@ -232,10 +247,21 @@ export async function sendNotifications(
 }
 
 /**
- * Envía mensaje via Twilio WhatsApp API
+ * Envía mensaje usando Twilio Content Template API
  */
-async function sendTwilioMessage(to: string, body: string, env: Env): Promise<void> {
+async function sendTwilioTemplate(
+  to: string,
+  contentSid: string,
+  variables: string[],
+  env: Env
+): Promise<void> {
   const url = `https://api.twilio.com/2010-04-01/Accounts/${env.TWILIO_ACCOUNT_SID}/Messages.json`;
+
+  // Construir objeto de variables para el template
+  const contentVariables: Record<string, string> = {};
+  variables.forEach((val, idx) => {
+    contentVariables[(idx + 1).toString()] = val;
+  });
 
   const response = await fetch(url, {
     method: "POST",
@@ -246,7 +272,8 @@ async function sendTwilioMessage(to: string, body: string, env: Env): Promise<vo
     body: new URLSearchParams({
       From: env.TWILIO_WHATSAPP_FROM,
       To: to,
-      Body: body,
+      ContentSid: contentSid,
+      ContentVariables: JSON.stringify(contentVariables),
     }),
   });
 
@@ -254,6 +281,13 @@ async function sendTwilioMessage(to: string, body: string, env: Env): Promise<vo
     const error = await response.text();
     throw new Error(`Twilio error: ${error}`);
   }
+}
+
+function formatDate(dateISO: string): string {
+  const [year, month, day] = dateISO.split("-");
+  const months = ["enero", "febrero", "marzo", "abril", "mayo", "junio",
+    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+  return `${parseInt(day)} de ${months[parseInt(month) - 1]}`;
 }
 
 function escapeXml(text: string): string {
