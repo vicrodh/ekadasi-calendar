@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hoy es Ekadasi - Recordatorios de Ayuno</title>
+  <title data-i18n="title">Hoy es Ekadasi - Recordatorios de Ayuno</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
@@ -433,6 +433,41 @@
       fill: var(--color-text);
     }
 
+    /* Language Toggle */
+    .lang-toggle {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      display: flex;
+      gap: 5px;
+      background: white;
+      padding: 5px;
+      border-radius: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      z-index: 100;
+    }
+
+    .lang-toggle button {
+      background: transparent;
+      border: none;
+      padding: 5px 12px;
+      border-radius: 15px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-text-light);
+      transition: all 0.2s;
+    }
+
+    .lang-toggle button.active {
+      background: var(--color-primary);
+      color: white;
+    }
+
+    .lang-toggle button:hover:not(.active) {
+      background: var(--color-cream);
+    }
+
     @media (max-width: 768px) {
       .container { padding: 25px 15px; }
       .card { padding: 20px; }
@@ -441,41 +476,46 @@
   </style>
 </head>
 <body>
+  <div class="lang-toggle">
+    <button id="lang-es" class="active">ES</button>
+    <button id="lang-en">EN</button>
+  </div>
+
   <div class="container">
     <header class="header">
       <div class="logo">
         <img src="assets/logo.png" alt="Hoy es Ekadasi">
       </div>
-      <h1>Hoy es Ekadasi</h1>
-      <p class="subtitle">Recordatorios de ayuno para practicantes Vaisnavas</p>
+      <h1 data-i18n="heading">Hoy es Ekadasi</h1>
+      <p class="subtitle" data-i18n="subtitle">Recordatorios de ayuno para practicantes Vaisnavas</p>
     </header>
 
     <div class="main-grid">
       <div class="card">
-        <h2>Bot de WhatsApp</h2>
-        <p>Recibe notificaciones automáticas un día antes de cada Ekadasi y el horario exacto para romper el ayuno (paran).</p>
+        <h2 data-i18n="whatsapp_title">Bot de WhatsApp</h2>
+        <p data-i18n="whatsapp_desc">Recibe notificaciones automáticas un día antes de cada Ekadasi y el horario exacto para romper el ayuno (paran).</p>
 
         <div class="whatsapp-number">
           <div class="number">+1 (980) 372-5205</div>
-          <div class="hint">Guarda este número y envía un mensaje</div>
+          <div class="hint" data-i18n="whatsapp_hint">Guarda este número y envía un mensaje</div>
         </div>
 
-        <a href="https://wa.me/19803725205?text=Hola" class="btn btn-whatsapp" target="_blank">
+        <a href="https://wa.me/19803725205?text=Hola" class="btn btn-whatsapp" target="_blank" data-i18n="whatsapp_btn">
           Abrir WhatsApp
         </a>
 
         <dl class="commands">
-          <div><dt>PROXIMO</dt><dd>— Ver el próximo Ekadasi</dd></div>
-          <div><dt>STOP</dt><dd>— Cancelar suscripción</dd></div>
+          <div><dt>PROXIMO</dt><dd data-i18n="cmd_next">— Ver el próximo Ekadasi</dd></div>
+          <div><dt>STOP</dt><dd data-i18n="cmd_stop">— Cancelar suscripción</dd></div>
         </dl>
       </div>
 
       <div class="card">
-        <h2>Calendario (.ics)</h2>
-        <p>Suscríbete al calendario de Ekadasis en tu aplicación favorita. Se sincroniza automáticamente.</p>
+        <h2 data-i18n="calendar_title">Calendario (.ics)</h2>
+        <p data-i18n="calendar_desc">Suscríbete al calendario de Ekadasis en tu aplicación favorita. Se sincroniza automáticamente.</p>
 
         <div class="calendar-form">
-          <label for="city-search">Tu ciudad:</label>
+          <label for="city-search" data-i18n="city_label">Tu ciudad:</label>
           <div class="searchable-select">
             <input type="text" id="city-search" placeholder="Buscar ciudad..." autocomplete="off">
             <select id="city" size="6">
@@ -532,17 +572,17 @@
               </optgroup>
             </select>
           </div>
-          <button class="btn btn-primary" onclick="downloadCalendar()">
+          <button class="btn btn-primary" onclick="downloadCalendar()" data-i18n="download_btn">
             Descargar Calendario
           </button>
         </div>
 
         <div class="calendar-instructions">
-          <h4>Cómo suscribirse</h4>
+          <h4 data-i18n="how_subscribe">Cómo suscribirse</h4>
           <ol>
-            <li><strong>Google Calendar:</strong> Añadir calendario → Desde URL</li>
-            <li><strong>iPhone:</strong> Ajustes → Calendario → Añadir suscripción</li>
-            <li><strong>Outlook:</strong> Suscribirse desde la web</li>
+            <li><strong>Google Calendar:</strong> <span data-i18n="instr_google">Añadir calendario → Desde URL</span></li>
+            <li><strong>iPhone:</strong> <span data-i18n="instr_iphone">Ajustes → Calendario → Añadir suscripción</span></li>
+            <li><strong>Outlook:</strong> <span data-i18n="instr_outlook">Suscribirse desde la web</span></li>
           </ol>
           <div class="calendar-url">
             https://ekadasi-api.bhaktilatam.com/calendar.ics?tz=America/Mexico_City
@@ -552,18 +592,18 @@
     </div>
 
     <section class="fasting-rules">
-      <h2>Reglas de Ayuno</h2>
+      <h2 data-i18n="fasting_title">Reglas de Ayuno</h2>
 
       <div class="intro">
-        <p>Si has observado un ayuno completo (sin siquiera agua), no necesitas romperlo con granos. Puedes romperlo con caraṇāmṛta o fruta. Pero si has observado Ekādaśī comiendo fruta, vegetales, etc., entonces debes romperlo al día siguiente tomando granos en los horarios indicados.</p>
-        <p><strong>Mahā-dvādaśī se observa igual que Ekādaśī.</strong></p>
+        <p data-i18n="fasting_intro1">Si has observado un ayuno completo (sin siquiera agua), no necesitas romperlo con granos. Puedes romperlo con caraṇāmṛta o fruta. Pero si has observado Ekādaśī comiendo fruta, vegetales, etc., entonces debes romperlo al día siguiente tomando granos en los horarios indicados.</p>
+        <p data-i18n="fasting_intro2"><strong>Mahā-dvādaśī se observa igual que Ekādaśī.</strong></p>
       </div>
 
-      <h3>Ekādaśī</h3>
-      <p>La esencia es comer de manera simple, una o dos veces, para poder dedicar el mayor tiempo posible a escuchar, cantar y recordar a Śrī Śrī Rādhā-Kṛṣṇa. <span class="warning">Nunca comas carne, pescado, huevos, cebolla, ajo, zanahoria, lentejas rojas (masūr-dal), lentejas verdes planas, hongos ni productos derivados de estos.</span></p>
+      <h3 data-i18n="ekadasi_section">Ekādaśī</h3>
+      <p data-i18n="ekadasi_essence">La esencia es comer de manera simple, una o dos veces, para poder dedicar el mayor tiempo posible a escuchar, cantar y recordar a Śrī Śrī Rādhā-Kṛṣṇa. <span class="warning">Nunca comas carne, pescado, huevos, cebolla, ajo, zanahoria, lentejas rojas (masūr-dal), lentejas verdes planas, hongos ni productos derivados de estos.</span></p>
 
-      <h4>Alimentos restringidos en Ekādaśī:</h4>
-      <ul>
+      <h4 data-i18n="restricted_ekadasi">Alimentos restringidos en Ekādaśī:</h4>
+      <ul data-i18n-list="restricted_ekadasi_list">
         <li>Tomates, berenjenas, coliflor, brócoli, pimientos, betabel, melón amargo (karela), loki, parmal, toroi, kunli, drumsticks, okra (bindī) y flores de plátano, rábano, calabaza, aceitunas</li>
         <li>Chícharos, garbanzos y todo tipo de leguminosas, incluyendo productos hechos de leguminosas (ej. papadams, tofu, tempeh)</li>
         <li>Todos los vegetales de hoja (ej. espinaca, lechugas, coles) y hierbas de hoja como perejil, hojas de cilantro, apio y hojas de curry</li>
@@ -573,43 +613,43 @@
         <li>Miel y dulces hechos con almidones</li>
       </ul>
 
-      <h4>Especias permitidas en Ekādaśī:</h4>
-      <ul>
+      <h4 data-i18n="allowed_spices">Especias permitidas en Ekādaśī:</h4>
+      <ul data-i18n-list="allowed_spices_list">
         <li>Solo pimienta negra en grano (moler personalmente) y sal pura de un paquete nuevo y limpio</li>
       </ul>
 
-      <h4>Especias NO permitidas en Ekādaśī:</h4>
-      <ul>
+      <h4 data-i18n="restricted_spices">Especias NO permitidas en Ekādaśī:</h4>
+      <ul data-i18n-list="restricted_spices_list">
         <li>Hing (asafétida), semillas de sésamo, comino, fenogreco, mostaza, tamarindo, hinojo, cardamomo, nuez moscada, jengibre y cúrcuma (fresca o no)</li>
       </ul>
 
-      <h4>Alimentos permitidos todos los días del año, incluyendo Ekādaśī y Cāturmāsya:</h4>
-      <ul>
+      <h4 data-i18n="allowed_always">Alimentos permitidos todos los días del año, incluyendo Ekādaśī y Cāturmāsya:</h4>
+      <ul data-i18n-list="allowed_always_list">
         <li>Todas las frutas frescas, todas las nueces y todos los aceites hechos de nueces si son puros</li>
         <li>Papas, calabaza, pepino, limón, aguacate, coco, trigo sarraceno, todos los azúcares</li>
         <li>Todos los productos lácteos puros (excepto yogur durante el 2do mes de Cāturmāsya y leche durante el 3er mes)</li>
         <li>Para sannyāsīs, brahmacārīs y vānaprasthas: rasurar la cabeza y cortar las uñas debe hacerse en días de luna llena</li>
       </ul>
 
-      <h3>Cāturmāsya</h3>
+      <h3 data-i18n="caturmasya_section">Cāturmāsya</h3>
 
-      <h4>Alimentos restringidos durante los cuatro meses de Cāturmāsya:</h4>
-      <ul>
+      <h4 data-i18n="restricted_caturmasya">Alimentos restringidos durante los cuatro meses de Cāturmāsya:</h4>
+      <ul data-i18n-list="restricted_caturmasya_list">
         <li>Berenjenas, tomates, loki, parmal, urad dahl y miel</li>
       </ul>
 
-      <h4>Alimentos particulares restringidos durante cada uno de los cuatro meses:</h4>
-      <ul>
+      <h4 data-i18n="restricted_monthly">Alimentos particulares restringidos durante cada uno de los cuatro meses:</h4>
+      <ul data-i18n-list="restricted_monthly_list">
         <li><strong>Primer mes:</strong> Sin vegetales de hoja, como espinaca, todo tipo de lechugas, todo tipo de coles, kale, hierbas de hoja como cilantro, menta, perejil, curry y hierbas en polvo y tés</li>
         <li><strong>Segundo mes:</strong> Sin yogur (si se requiere por salud, puede mezclarse con agua)</li>
         <li><strong>Tercer mes:</strong> Sin leche (si se requiere, puede mezclarse con una gota de jugo de limón)</li>
         <li><strong>Cuarto mes:</strong> Sin aceite de mostaza ni semillas de sésamo</li>
       </ul>
 
-      <h3>Puruṣottama Māsa</h3>
+      <h3 data-i18n="purusottama_section">Puruṣottama Māsa</h3>
 
-      <h4>Alimentos restringidos durante el mes de Puruṣottama:</h4>
-      <ul>
+      <h4 data-i18n="restricted_purusottama">Alimentos restringidos durante el mes de Puruṣottama:</h4>
+      <ul data-i18n-list="restricted_purusottama_list">
         <li>Berenjenas, tomates, loki, parmal, urad dahl, miel, aceite de mostaza o semillas de sésamo</li>
         <li>Sin rasurar para brahmacārīs y sannyāsīs</li>
       </ul>
@@ -621,7 +661,7 @@
     </div>
 
     <div class="reverencias">
-      <p>
+      <p data-i18n="reverencias">
         Ofrezco mis humildes reverencias a los pies de loto de<br>
         Śrī Śrīmad Bhaktivedānta Nārāyaṇa Gosvāmī Mahārāja,<br>
         a Śrīpad BV Madhusūdana Mahārāja<br>
@@ -639,18 +679,201 @@
   <script>
     const API_BASE = 'https://ekadasi-api.bhaktilatam.com';
 
+    // Diccionario de traducciones
+    const translations = {
+      es: {
+        title: "Hoy es Ekadasi - Recordatorios de Ayuno",
+        heading: "Hoy es Ekadasi",
+        subtitle: "Recordatorios de ayuno para practicantes Vaisnavas",
+        whatsapp_title: "Bot de WhatsApp",
+        whatsapp_desc: "Recibe notificaciones automáticas un día antes de cada Ekadasi y el horario exacto para romper el ayuno (paran).",
+        whatsapp_hint: "Guarda este número y envía un mensaje",
+        whatsapp_btn: "Abrir WhatsApp",
+        cmd_next: "— Ver el próximo Ekadasi",
+        cmd_stop: "— Cancelar suscripción",
+        calendar_title: "Calendario (.ics)",
+        calendar_desc: "Suscríbete al calendario de Ekadasis en tu aplicación favorita. Se sincroniza automáticamente.",
+        city_label: "Tu ciudad:",
+        city_placeholder: "Buscar ciudad...",
+        download_btn: "Descargar Calendario",
+        how_subscribe: "Cómo suscribirse",
+        instr_google: "Añadir calendario → Desde URL",
+        instr_iphone: "Ajustes → Calendario → Añadir suscripción",
+        instr_outlook: "Suscribirse desde la web",
+        reverencias: "Ofrezco mis humildes reverencias a los pies de loto de<br>Śrī Śrīmad Bhaktivedānta Nārāyaṇa Gosvāmī Mahārāja,<br>a Śrīpad BV Madhusūdana Mahārāja<br>y a todos los vaiṣṇavas de la misión de Śrī Gauḍīya Vedānta Samiti.",
+        alert_select_city: "Por favor selecciona una ciudad",
+        // Fasting rules
+        fasting_title: "Reglas de Ayuno",
+        fasting_intro1: "Si has observado un ayuno completo (sin siquiera agua), no necesitas romperlo con granos. Puedes romperlo con caraṇāmṛta o fruta. Pero si has observado Ekādaśī comiendo fruta, vegetales, etc., entonces debes romperlo al día siguiente tomando granos en los horarios indicados.",
+        fasting_intro2: "<strong>Mahā-dvādaśī se observa igual que Ekādaśī.</strong>",
+        ekadasi_section: "Ekādaśī",
+        ekadasi_essence: "La esencia es comer de manera simple, una o dos veces, para poder dedicar el mayor tiempo posible a escuchar, cantar y recordar a Śrī Śrī Rādhā-Kṛṣṇa. <span class=\"warning\">Nunca comas carne, pescado, huevos, cebolla, ajo, zanahoria, lentejas rojas (masūr-dal), lentejas verdes planas, hongos ni productos derivados de estos.</span>",
+        restricted_ekadasi: "Alimentos restringidos en Ekādaśī:",
+        restricted_ekadasi_list: [
+          "Tomates, berenjenas, coliflor, brócoli, pimientos, betabel, melón amargo (karela), loki, parmal, toroi, kunli, drumsticks, okra (bindī) y flores de plátano, rábano, calabaza, aceitunas",
+          "Chícharos, garbanzos y todo tipo de leguminosas, incluyendo productos hechos de leguminosas (ej. papadams, tofu, tempeh)",
+          "Todos los vegetales de hoja (ej. espinaca, lechugas, coles) y hierbas de hoja como perejil, hojas de cilantro, apio y hojas de curry",
+          "Granos (ej. mijo, cebada, sémola, pasta, arroz, maíz) y todo tipo de harinas hechas de granos y leguminosas (ej. harina de arroz, harina de garbanzo, harina de urad dahl)",
+          "Almidones de maíz o granos, y productos hechos o mezclados con estos almidones como bicarbonato, polvo para hornear, ciertas bebidas gaseosas con jarabe de maíz, natillas, ciertos yogures y pudines, ciertas variedades de crema y requesón, ciertos dulces y caramelos, y bolitas de tapioca",
+          "Aceites hechos de granos (ej. aceite de maíz, aceite de mostaza, aceite de sésamo) y productos fritos en estos aceites (ej. nueces fritas, papas fritas y otros snacks fritos)",
+          "Miel y dulces hechos con almidones"
+        ],
+        allowed_spices: "Especias permitidas en Ekādaśī:",
+        allowed_spices_list: ["Solo pimienta negra en grano (moler personalmente) y sal pura de un paquete nuevo y limpio"],
+        restricted_spices: "Especias NO permitidas en Ekādaśī:",
+        restricted_spices_list: ["Hing (asafétida), semillas de sésamo, comino, fenogreco, mostaza, tamarindo, hinojo, cardamomo, nuez moscada, jengibre y cúrcuma (fresca o no)"],
+        allowed_always: "Alimentos permitidos todos los días del año, incluyendo Ekādaśī y Cāturmāsya:",
+        allowed_always_list: [
+          "Todas las frutas frescas, todas las nueces y todos los aceites hechos de nueces si son puros",
+          "Papas, calabaza, pepino, limón, aguacate, coco, trigo sarraceno, todos los azúcares",
+          "Todos los productos lácteos puros (excepto yogur durante el 2do mes de Cāturmāsya y leche durante el 3er mes)",
+          "Para sannyāsīs, brahmacārīs y vānaprasthas: rasurar la cabeza y cortar las uñas debe hacerse en días de luna llena"
+        ],
+        caturmasya_section: "Cāturmāsya",
+        restricted_caturmasya: "Alimentos restringidos durante los cuatro meses de Cāturmāsya:",
+        restricted_caturmasya_list: ["Berenjenas, tomates, loki, parmal, urad dahl y miel"],
+        restricted_monthly: "Alimentos particulares restringidos durante cada uno de los cuatro meses:",
+        restricted_monthly_list: [
+          "<strong>Primer mes:</strong> Sin vegetales de hoja, como espinaca, todo tipo de lechugas, todo tipo de coles, kale, hierbas de hoja como cilantro, menta, perejil, curry y hierbas en polvo y tés",
+          "<strong>Segundo mes:</strong> Sin yogur (si se requiere por salud, puede mezclarse con agua)",
+          "<strong>Tercer mes:</strong> Sin leche (si se requiere, puede mezclarse con una gota de jugo de limón)",
+          "<strong>Cuarto mes:</strong> Sin aceite de mostaza ni semillas de sésamo"
+        ],
+        purusottama_section: "Puruṣottama Māsa",
+        restricted_purusottama: "Alimentos restringidos durante el mes de Puruṣottama:",
+        restricted_purusottama_list: [
+          "Berenjenas, tomates, loki, parmal, urad dahl, miel, aceite de mostaza o semillas de sésamo",
+          "Sin rasurar para brahmacārīs y sannyāsīs"
+        ]
+      },
+      en: {
+        title: "Today is Ekadasi - Fasting Reminders",
+        heading: "Today is Ekadasi",
+        subtitle: "Fasting reminders for Vaisnava practitioners",
+        whatsapp_title: "WhatsApp Bot",
+        whatsapp_desc: "Receive automatic notifications one day before each Ekadasi and the exact time to break your fast (paran).",
+        whatsapp_hint: "Save this number and send a message",
+        whatsapp_btn: "Open WhatsApp",
+        cmd_next: "— See next Ekadasi",
+        cmd_stop: "— Unsubscribe",
+        calendar_title: "Calendar (.ics)",
+        calendar_desc: "Subscribe to the Ekadasi calendar in your favorite app. Syncs automatically.",
+        city_label: "Your city:",
+        city_placeholder: "Search city...",
+        download_btn: "Download Calendar",
+        how_subscribe: "How to subscribe",
+        instr_google: "Add calendar → From URL",
+        instr_iphone: "Settings → Calendar → Add subscription",
+        instr_outlook: "Subscribe from web",
+        reverencias: "I offer my humble obeisances at the lotus feet of<br>Śrī Śrīmad Bhaktivedānta Nārāyaṇa Gosvāmī Mahārāja,<br>Śrīpad BV Madhusūdana Mahārāja<br>and all the vaiṣṇavas of the Śrī Gauḍīya Vedānta Samiti mission.",
+        alert_select_city: "Please select a city",
+        // Fasting rules
+        fasting_title: "Fasting Rules",
+        fasting_intro1: "If you have observed a complete fast (without even water), you don't need to break it with grains. You can break it with caraṇāmṛta or fruit. But if you observed Ekādaśī eating fruit, vegetables, etc., then you must break it the next day by taking grains at the indicated times.",
+        fasting_intro2: "<strong>Mahā-dvādaśī is observed the same as Ekādaśī.</strong>",
+        ekadasi_section: "Ekādaśī",
+        ekadasi_essence: "The essence is to eat simply, once or twice, to dedicate as much time as possible to hearing, chanting and remembering Śrī Śrī Rādhā-Kṛṣṇa. <span class=\"warning\">Never eat meat, fish, eggs, onion, garlic, carrot, red lentils (masūr-dal), flat green lentils, mushrooms or products derived from these.</span>",
+        restricted_ekadasi: "Foods restricted on Ekādaśī:",
+        restricted_ekadasi_list: [
+          "Tomatoes, eggplant, cauliflower, broccoli, bell peppers, beetroot, bitter melon (karela), loki, parmal, toroi, kunli, drumsticks, okra (bindī) and banana flowers, radish, pumpkin, olives",
+          "Peas, chickpeas and all types of legumes, including products made from legumes (e.g. papadams, tofu, tempeh)",
+          "All leafy vegetables (e.g. spinach, lettuce, cabbage) and leafy herbs such as parsley, cilantro leaves, celery and curry leaves",
+          "Grains (e.g. millet, barley, semolina, pasta, rice, corn) and all types of flours made from grains and legumes (e.g. rice flour, chickpea flour, urad dahl flour)",
+          "Corn or grain starches, and products made or mixed with these starches such as baking soda, baking powder, certain sodas with corn syrup, custards, certain yogurts and puddings, certain varieties of cream and cottage cheese, certain sweets and candies, and tapioca pearls",
+          "Oils made from grains (e.g. corn oil, mustard oil, sesame oil) and products fried in these oils (e.g. fried nuts, french fries and other fried snacks)",
+          "Honey and sweets made with starches"
+        ],
+        allowed_spices: "Spices allowed on Ekādaśī:",
+        allowed_spices_list: ["Only whole black pepper (grind personally) and pure salt from a new, clean package"],
+        restricted_spices: "Spices NOT allowed on Ekādaśī:",
+        restricted_spices_list: ["Hing (asafoetida), sesame seeds, cumin, fenugreek, mustard, tamarind, fennel, cardamom, nutmeg, ginger and turmeric (fresh or not)"],
+        allowed_always: "Foods allowed every day of the year, including Ekādaśī and Cāturmāsya:",
+        allowed_always_list: [
+          "All fresh fruits, all nuts and all oils made from nuts if pure",
+          "Potatoes, squash, cucumber, lemon, avocado, coconut, buckwheat, all sugars",
+          "All pure dairy products (except yogurt during 2nd month of Cāturmāsya and milk during 3rd month)",
+          "For sannyāsīs, brahmacārīs and vānaprasthas: shaving the head and cutting nails should be done on full moon days"
+        ],
+        caturmasya_section: "Cāturmāsya",
+        restricted_caturmasya: "Foods restricted during the four months of Cāturmāsya:",
+        restricted_caturmasya_list: ["Eggplant, tomatoes, loki, parmal, urad dahl and honey"],
+        restricted_monthly: "Specific foods restricted during each of the four months:",
+        restricted_monthly_list: [
+          "<strong>First month:</strong> No leafy vegetables, such as spinach, all types of lettuce, all types of cabbage, kale, leafy herbs like cilantro, mint, parsley, curry and herbal powders and teas",
+          "<strong>Second month:</strong> No yogurt (if required for health, can be mixed with water)",
+          "<strong>Third month:</strong> No milk (if required, can be mixed with a drop of lemon juice)",
+          "<strong>Fourth month:</strong> No mustard oil or sesame seeds"
+        ],
+        purusottama_section: "Puruṣottama Māsa",
+        restricted_purusottama: "Foods restricted during Puruṣottama month:",
+        restricted_purusottama_list: [
+          "Eggplant, tomatoes, loki, parmal, urad dahl, honey, mustard oil or sesame seeds",
+          "No shaving for brahmacārīs and sannyāsīs"
+        ]
+      }
+    };
+
+    let currentLang = 'es';
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      const t = translations[lang];
+      document.documentElement.lang = lang;
+
+      // Actualizar elementos con data-i18n
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) {
+          el.innerHTML = t[key];
+        }
+      });
+
+      // Actualizar listas con data-i18n-list
+      document.querySelectorAll('[data-i18n-list]').forEach(ul => {
+        const key = ul.getAttribute('data-i18n-list');
+        if (t[key] && Array.isArray(t[key])) {
+          ul.innerHTML = t[key].map(item => `<li>${item}</li>`).join('');
+        }
+      });
+
+      // Actualizar placeholder del buscador
+      const searchInput = document.getElementById('city-search');
+      if (searchInput) {
+        searchInput.placeholder = t.city_placeholder;
+      }
+
+      // Actualizar botones de idioma
+      document.getElementById('lang-es').classList.toggle('active', lang === 'es');
+      document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+
+      // Guardar preferencia
+      localStorage.setItem('ekadasi-lang', lang);
+    }
+
     function downloadCalendar() {
       const tz = document.getElementById('city').value;
+      const t = translations[currentLang];
       if (!tz) {
-        alert('Por favor selecciona una ciudad');
+        alert(t.alert_select_city);
         return;
       }
       const url = `${API_BASE}/calendar.ics?tz=${encodeURIComponent(tz)}`;
       window.open(url, '_blank');
     }
 
-    // Buscador de ciudades
+    // Inicialización
     document.addEventListener('DOMContentLoaded', function() {
+      // Cargar idioma guardado
+      const savedLang = localStorage.getItem('ekadasi-lang');
+      if (savedLang && translations[savedLang]) {
+        setLanguage(savedLang);
+      }
+
+      // Event listeners para cambio de idioma
+      document.getElementById('lang-es').addEventListener('click', () => setLanguage('es'));
+      document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
+
+      // Buscador de ciudades
       const searchInput = document.getElementById('city-search');
       const select = document.getElementById('city');
       const options = Array.from(select.querySelectorAll('option'));
@@ -660,7 +883,6 @@
         const query = this.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
         if (!query) {
-          // Mostrar todo
           optgroups.forEach(og => og.style.display = '');
           options.forEach(opt => opt.style.display = '');
           return;
@@ -673,14 +895,12 @@
           option.style.display = matches ? '' : 'none';
         });
 
-        // Ocultar optgroups vacíos
         optgroups.forEach(og => {
           const visibleOptions = og.querySelectorAll('option:not([style*="display: none"])');
           og.style.display = visibleOptions.length ? '' : 'none';
         });
       });
 
-      // Seleccionar primera opción por defecto
       if (options.length > 0) {
         options[0].selected = true;
       }
