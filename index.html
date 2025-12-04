@@ -221,30 +221,14 @@
       border-color: var(--color-secondary);
     }
 
-    .searchable-select {
+    .city-combobox {
       position: relative;
       margin-bottom: 15px;
     }
 
-    .searchable-select input {
+    .city-combobox input {
       width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 1rem;
-      background: white;
-      color: var(--color-text);
-      margin-bottom: 10px;
-    }
-
-    .searchable-select input:focus {
-      outline: none;
-      border-color: var(--color-secondary);
-    }
-
-    .searchable-select select {
-      width: 100%;
-      padding: 12px;
+      padding: 12px 40px 12px 12px;
       border: 1px solid #ddd;
       border-radius: 8px;
       font-size: 1rem;
@@ -253,14 +237,85 @@
       cursor: pointer;
     }
 
-    .searchable-select select:focus {
+    .city-combobox input:focus {
       outline: none;
       border-color: var(--color-secondary);
     }
 
-    .searchable-select select optgroup {
+    .city-combobox::after {
+      content: '▼';
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.7rem;
+      color: var(--color-text-light);
+      pointer-events: none;
+    }
+
+    .city-combobox.open::after {
+      content: '▲';
+    }
+
+    .city-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #ddd;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      max-height: 250px;
+      overflow-y: auto;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .city-combobox.open .city-dropdown {
+      display: block;
+    }
+
+    .city-combobox.open input {
+      border-radius: 8px 8px 0 0;
+    }
+
+    .city-group-label {
+      padding: 8px 12px;
+      font-size: 0.8rem;
       font-weight: 600;
       color: var(--color-primary);
+      background: var(--color-cream);
+      position: sticky;
+      top: 0;
+    }
+
+    .city-option {
+      padding: 10px 12px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: var(--color-text);
+    }
+
+    .city-option:hover, .city-option.highlighted {
+      background: var(--color-cream);
+    }
+
+    .city-option.selected {
+      background: var(--color-primary);
+      color: white;
+    }
+
+    .city-option.hidden {
+      display: none;
+    }
+
+    .city-no-results {
+      padding: 12px;
+      text-align: center;
+      color: var(--color-text-light);
+      font-size: 0.9rem;
     }
 
     .calendar-instructions {
@@ -512,62 +567,11 @@
         <p data-i18n="calendar_desc">Suscríbete al calendario de Ekadasis en tu aplicación favorita. Se sincroniza automáticamente.</p>
 
         <div class="calendar-form">
-          <label for="city-search" data-i18n="city_label">Tu ciudad:</label>
-          <div class="searchable-select">
-            <input type="text" id="city-search" placeholder="Buscar ciudad..." autocomplete="off">
-            <select id="city">
-              <optgroup label="México - Principales">
-                <option value="America/Mexico_City" data-search="ciudad mexico cdmx df">Ciudad de México (CDMX)</option>
-                <option value="America/Mexico_City" data-search="guadalajara jalisco">Guadalajara</option>
-                <option value="America/Monterrey" data-search="monterrey nuevo leon">Monterrey</option>
-                <option value="America/Mexico_City" data-search="puebla">Puebla</option>
-                <option value="America/Mexico_City" data-search="zacatecas">Zacatecas</option>
-                <option value="America/Mexico_City" data-search="ciudad victoria tamaulipas">Ciudad Victoria</option>
-              </optgroup>
-              <optgroup label="México - Otras">
-                <option value="America/Mexico_City" data-search="queretaro">Querétaro</option>
-                <option value="America/Mexico_City" data-search="merida yucatan">Mérida</option>
-                <option value="America/Cancun" data-search="cancun quintana roo">Cancún</option>
-                <option value="America/Tijuana" data-search="tijuana baja california">Tijuana</option>
-                <option value="America/Mexico_City" data-search="leon guanajuato">León</option>
-                <option value="America/Mexico_City" data-search="aguascalientes">Aguascalientes</option>
-                <option value="America/Mexico_City" data-search="morelia michoacan">Morelia</option>
-                <option value="America/Mexico_City" data-search="oaxaca">Oaxaca</option>
-                <option value="America/Mexico_City" data-search="veracruz">Veracruz</option>
-                <option value="America/Mexico_City" data-search="toluca estado mexico">Toluca</option>
-                <option value="America/Hermosillo" data-search="hermosillo sonora">Hermosillo</option>
-                <option value="America/Chihuahua" data-search="chihuahua">Chihuahua</option>
-                <option value="America/Mazatlan" data-search="mazatlan sinaloa culiacan">Mazatlán / Culiacán</option>
-              </optgroup>
-              <optgroup label="Sudamérica">
-                <option value="America/Lima" data-search="lima peru">Lima, Perú</option>
-                <option value="America/Bogota" data-search="bogota colombia">Bogotá, Colombia</option>
-                <option value="America/Santiago" data-search="santiago chile">Santiago, Chile</option>
-                <option value="America/Argentina/Buenos_Aires" data-search="buenos aires argentina">Buenos Aires, Argentina</option>
-                <option value="America/Sao_Paulo" data-search="sao paulo brasil brazil">São Paulo, Brasil</option>
-                <option value="America/Caracas" data-search="caracas venezuela">Caracas, Venezuela</option>
-                <option value="America/Guayaquil" data-search="quito guayaquil ecuador">Ecuador</option>
-              </optgroup>
-              <optgroup label="Centroamérica y Caribe">
-                <option value="America/Guatemala" data-search="guatemala">Guatemala</option>
-                <option value="America/Costa_Rica" data-search="costa rica san jose">Costa Rica</option>
-                <option value="America/Panama" data-search="panama">Panamá</option>
-                <option value="America/Havana" data-search="habana cuba">La Habana, Cuba</option>
-                <option value="America/Santo_Domingo" data-search="santo domingo republica dominicana">Rep. Dominicana</option>
-              </optgroup>
-              <optgroup label="Estados Unidos">
-                <option value="America/Los_Angeles" data-search="los angeles california">Los Ángeles</option>
-                <option value="America/Chicago" data-search="chicago houston dallas texas">Houston / Dallas / Chicago</option>
-                <option value="America/New_York" data-search="new york miami florida">Nueva York / Miami</option>
-              </optgroup>
-              <optgroup label="Europa">
-                <option value="Europe/Madrid" data-search="madrid españa spain barcelona">España</option>
-                <option value="Europe/London" data-search="london londres uk reino unido">Reino Unido</option>
-              </optgroup>
-              <optgroup label="India">
-                <option value="Asia/Kolkata" data-search="india vrindavan mathura delhi kolkata">India (Vṛndāvan)</option>
-              </optgroup>
-            </select>
+          <label data-i18n="city_label">Tu ciudad:</label>
+          <div class="city-combobox" id="city-combobox">
+            <input type="text" id="city-input" placeholder="Buscar ciudad..." autocomplete="off" readonly>
+            <div class="city-dropdown" id="city-dropdown"></div>
+            <input type="hidden" id="city-value" value="America/Mexico_City">
           </div>
           <button class="btn btn-primary" onclick="downloadCalendar()" data-i18n="download_btn">
             Descargar Calendario
@@ -847,8 +851,63 @@
       localStorage.setItem('ekadasi-lang', lang);
     }
 
+    // Datos de ciudades
+    const CITIES = [
+      { group: 'México - Principales', cities: [
+        { value: 'America/Mexico_City', label: 'Ciudad de México (CDMX)', search: 'ciudad mexico cdmx df' },
+        { value: 'America/Mexico_City', label: 'Guadalajara', search: 'guadalajara jalisco' },
+        { value: 'America/Monterrey', label: 'Monterrey', search: 'monterrey nuevo leon' },
+        { value: 'America/Mexico_City', label: 'Puebla', search: 'puebla' },
+        { value: 'America/Mexico_City', label: 'Zacatecas', search: 'zacatecas' },
+        { value: 'America/Mexico_City', label: 'Ciudad Victoria', search: 'ciudad victoria tamaulipas' },
+      ]},
+      { group: 'México - Otras', cities: [
+        { value: 'America/Mexico_City', label: 'Querétaro', search: 'queretaro' },
+        { value: 'America/Mexico_City', label: 'Mérida', search: 'merida yucatan' },
+        { value: 'America/Cancun', label: 'Cancún', search: 'cancun quintana roo' },
+        { value: 'America/Tijuana', label: 'Tijuana', search: 'tijuana baja california' },
+        { value: 'America/Mexico_City', label: 'León', search: 'leon guanajuato' },
+        { value: 'America/Mexico_City', label: 'Aguascalientes', search: 'aguascalientes' },
+        { value: 'America/Mexico_City', label: 'Morelia', search: 'morelia michoacan' },
+        { value: 'America/Mexico_City', label: 'Oaxaca', search: 'oaxaca' },
+        { value: 'America/Mexico_City', label: 'Veracruz', search: 'veracruz' },
+        { value: 'America/Mexico_City', label: 'Toluca', search: 'toluca estado mexico' },
+        { value: 'America/Hermosillo', label: 'Hermosillo', search: 'hermosillo sonora' },
+        { value: 'America/Chihuahua', label: 'Chihuahua', search: 'chihuahua' },
+        { value: 'America/Mazatlan', label: 'Mazatlán / Culiacán', search: 'mazatlan sinaloa culiacan' },
+      ]},
+      { group: 'Sudamérica', cities: [
+        { value: 'America/Lima', label: 'Lima, Perú', search: 'lima peru' },
+        { value: 'America/Bogota', label: 'Bogotá, Colombia', search: 'bogota colombia' },
+        { value: 'America/Santiago', label: 'Santiago, Chile', search: 'santiago chile' },
+        { value: 'America/Argentina/Buenos_Aires', label: 'Buenos Aires, Argentina', search: 'buenos aires argentina' },
+        { value: 'America/Sao_Paulo', label: 'São Paulo, Brasil', search: 'sao paulo brasil brazil' },
+        { value: 'America/Caracas', label: 'Caracas, Venezuela', search: 'caracas venezuela' },
+        { value: 'America/Guayaquil', label: 'Ecuador', search: 'quito guayaquil ecuador' },
+      ]},
+      { group: 'Centroamérica y Caribe', cities: [
+        { value: 'America/Guatemala', label: 'Guatemala', search: 'guatemala' },
+        { value: 'America/Costa_Rica', label: 'Costa Rica', search: 'costa rica san jose' },
+        { value: 'America/Panama', label: 'Panamá', search: 'panama' },
+        { value: 'America/Havana', label: 'La Habana, Cuba', search: 'habana cuba' },
+        { value: 'America/Santo_Domingo', label: 'Rep. Dominicana', search: 'santo domingo republica dominicana' },
+      ]},
+      { group: 'Estados Unidos', cities: [
+        { value: 'America/Los_Angeles', label: 'Los Ángeles', search: 'los angeles california' },
+        { value: 'America/Chicago', label: 'Houston / Dallas / Chicago', search: 'chicago houston dallas texas' },
+        { value: 'America/New_York', label: 'Nueva York / Miami', search: 'new york miami florida' },
+      ]},
+      { group: 'Europa', cities: [
+        { value: 'Europe/Madrid', label: 'España', search: 'madrid españa spain barcelona' },
+        { value: 'Europe/London', label: 'Reino Unido', search: 'london londres uk reino unido' },
+      ]},
+      { group: 'India', cities: [
+        { value: 'Asia/Kolkata', label: 'India (Vṛndāvan)', search: 'india vrindavan mathura delhi kolkata' },
+      ]},
+    ];
+
     function downloadCalendar() {
-      const tz = document.getElementById('city').value;
+      const tz = document.getElementById('city-value').value;
       const t = translations[currentLang];
       if (!tz) {
         alert(t.alert_select_city);
@@ -870,37 +929,109 @@
       document.getElementById('lang-es').addEventListener('click', () => setLanguage('es'));
       document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
 
-      // Buscador de ciudades
-      const searchInput = document.getElementById('city-search');
-      const select = document.getElementById('city');
-      const options = Array.from(select.querySelectorAll('option'));
-      const optgroups = Array.from(select.querySelectorAll('optgroup'));
+      // City Combobox
+      const combobox = document.getElementById('city-combobox');
+      const input = document.getElementById('city-input');
+      const dropdown = document.getElementById('city-dropdown');
+      const hiddenInput = document.getElementById('city-value');
 
-      searchInput.addEventListener('input', function() {
-        const query = this.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      function normalize(text) {
+        return text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      }
 
-        if (!query) {
-          optgroups.forEach(og => og.style.display = '');
-          options.forEach(opt => opt.style.display = '');
-          return;
+      function renderDropdown(filter = '') {
+        const query = normalize(filter);
+        let html = '';
+        let hasResults = false;
+
+        CITIES.forEach(group => {
+          const filteredCities = group.cities.filter(city => {
+            const label = normalize(city.label);
+            const search = normalize(city.search);
+            return !query || label.includes(query) || search.includes(query);
+          });
+
+          if (filteredCities.length > 0) {
+            hasResults = true;
+            html += `<div class="city-group-label">${group.group}</div>`;
+            filteredCities.forEach(city => {
+              const selected = city.value === hiddenInput.value && city.label === input.value ? 'selected' : '';
+              html += `<div class="city-option ${selected}" data-value="${city.value}" data-label="${city.label}">${city.label}</div>`;
+            });
+          }
+        });
+
+        if (!hasResults) {
+          html = `<div class="city-no-results">${currentLang === 'en' ? 'No results found' : 'Sin resultados'}</div>`;
         }
 
-        options.forEach(option => {
-          const text = option.textContent.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-          const searchData = (option.dataset.search || '').toLowerCase();
-          const matches = text.includes(query) || searchData.includes(query);
-          option.style.display = matches ? '' : 'none';
-        });
+        dropdown.innerHTML = html;
 
-        optgroups.forEach(og => {
-          const visibleOptions = og.querySelectorAll('option:not([style*="display: none"])');
-          og.style.display = visibleOptions.length ? '' : 'none';
+        // Add click handlers
+        dropdown.querySelectorAll('.city-option').forEach(opt => {
+          opt.addEventListener('click', () => {
+            selectCity(opt.dataset.value, opt.dataset.label);
+          });
         });
+      }
+
+      function selectCity(value, label) {
+        hiddenInput.value = value;
+        input.value = label;
+        closeDropdown();
+      }
+
+      function openDropdown() {
+        combobox.classList.add('open');
+        input.removeAttribute('readonly');
+        input.select();
+        renderDropdown(input.value === CITIES[0].cities[0].label ? '' : input.value);
+      }
+
+      function closeDropdown() {
+        combobox.classList.remove('open');
+        input.setAttribute('readonly', true);
+        // Restore selected value if input was cleared
+        if (!input.value) {
+          const firstCity = CITIES[0].cities[0];
+          input.value = firstCity.label;
+          hiddenInput.value = firstCity.value;
+        }
+      }
+
+      input.addEventListener('click', () => {
+        if (!combobox.classList.contains('open')) {
+          openDropdown();
+        }
       });
 
-      if (options.length > 0) {
-        options[0].selected = true;
-      }
+      input.addEventListener('input', () => {
+        renderDropdown(input.value);
+      });
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeDropdown();
+        } else if (e.key === 'Enter') {
+          const firstOption = dropdown.querySelector('.city-option:not(.hidden)');
+          if (firstOption) {
+            selectCity(firstOption.dataset.value, firstOption.dataset.label);
+          }
+        }
+      });
+
+      // Close on click outside
+      document.addEventListener('click', (e) => {
+        if (!combobox.contains(e.target)) {
+          closeDropdown();
+        }
+      });
+
+      // Initialize with first city
+      const firstCity = CITIES[0].cities[0];
+      input.value = firstCity.label;
+      hiddenInput.value = firstCity.value;
+      renderDropdown();
     });
   </script>
 </body>
