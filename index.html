@@ -221,6 +221,51 @@
       border-color: var(--color-secondary);
     }
 
+    .searchable-select {
+      position: relative;
+      margin-bottom: 15px;
+    }
+
+    .searchable-select input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px 8px 0 0;
+      font-size: 1rem;
+      background: white;
+      color: var(--color-text);
+    }
+
+    .searchable-select input:focus {
+      outline: none;
+      border-color: var(--color-secondary);
+    }
+
+    .searchable-select select {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      font-size: 0.9rem;
+      background: white;
+      margin-bottom: 0;
+    }
+
+    .searchable-select select option {
+      padding: 8px 12px;
+    }
+
+    .searchable-select select option:checked {
+      background: var(--color-primary);
+      color: white;
+    }
+
+    .searchable-select select optgroup {
+      font-weight: 600;
+      color: var(--color-primary);
+      padding: 8px 0 4px;
+    }
+
     .calendar-instructions {
       background: var(--color-cream);
       border-radius: 8px;
@@ -430,12 +475,63 @@
         <p>Suscríbete al calendario de Ekadasis en tu aplicación favorita. Se sincroniza automáticamente.</p>
 
         <div class="calendar-form">
-          <label for="city">Tu ciudad:</label>
-          <select id="city">
-            <option value="America/Mexico_City">Ciudad de México</option>
-            <option value="America/Mexico_City">Guadalajara</option>
-            <option value="America/Mexico_City">Monterrey</option>
-          </select>
+          <label for="city-search">Tu ciudad:</label>
+          <div class="searchable-select">
+            <input type="text" id="city-search" placeholder="Buscar ciudad..." autocomplete="off">
+            <select id="city" size="6">
+              <optgroup label="México - Principales">
+                <option value="America/Mexico_City" data-search="ciudad mexico cdmx df">Ciudad de México (CDMX)</option>
+                <option value="America/Mexico_City" data-search="guadalajara jalisco">Guadalajara</option>
+                <option value="America/Monterrey" data-search="monterrey nuevo leon">Monterrey</option>
+                <option value="America/Mexico_City" data-search="puebla">Puebla</option>
+                <option value="America/Tijuana" data-search="tijuana baja california">Tijuana</option>
+                <option value="America/Mexico_City" data-search="leon guanajuato">León</option>
+                <option value="America/Mexico_City" data-search="zacatecas">Zacatecas</option>
+                <option value="America/Mexico_City" data-search="ciudad victoria tamaulipas">Ciudad Victoria</option>
+              </optgroup>
+              <optgroup label="México - Otras">
+                <option value="America/Mexico_City" data-search="queretaro">Querétaro</option>
+                <option value="America/Mexico_City" data-search="merida yucatan">Mérida</option>
+                <option value="America/Cancun" data-search="cancun quintana roo">Cancún</option>
+                <option value="America/Mexico_City" data-search="aguascalientes">Aguascalientes</option>
+                <option value="America/Mexico_City" data-search="morelia michoacan">Morelia</option>
+                <option value="America/Mexico_City" data-search="oaxaca">Oaxaca</option>
+                <option value="America/Mexico_City" data-search="veracruz">Veracruz</option>
+                <option value="America/Mexico_City" data-search="toluca estado mexico">Toluca</option>
+                <option value="America/Hermosillo" data-search="hermosillo sonora">Hermosillo</option>
+                <option value="America/Chihuahua" data-search="chihuahua">Chihuahua</option>
+                <option value="America/Mazatlan" data-search="mazatlan sinaloa culiacan">Mazatlán / Culiacán</option>
+              </optgroup>
+              <optgroup label="Sudamérica">
+                <option value="America/Lima" data-search="lima peru">Lima, Perú</option>
+                <option value="America/Bogota" data-search="bogota colombia">Bogotá, Colombia</option>
+                <option value="America/Santiago" data-search="santiago chile">Santiago, Chile</option>
+                <option value="America/Argentina/Buenos_Aires" data-search="buenos aires argentina">Buenos Aires, Argentina</option>
+                <option value="America/Sao_Paulo" data-search="sao paulo brasil brazil">São Paulo, Brasil</option>
+                <option value="America/Caracas" data-search="caracas venezuela">Caracas, Venezuela</option>
+                <option value="America/Guayaquil" data-search="quito guayaquil ecuador">Ecuador</option>
+              </optgroup>
+              <optgroup label="Centroamérica y Caribe">
+                <option value="America/Guatemala" data-search="guatemala">Guatemala</option>
+                <option value="America/Costa_Rica" data-search="costa rica san jose">Costa Rica</option>
+                <option value="America/Panama" data-search="panama">Panamá</option>
+                <option value="America/Havana" data-search="habana cuba">La Habana, Cuba</option>
+                <option value="America/Santo_Domingo" data-search="santo domingo republica dominicana">Rep. Dominicana</option>
+              </optgroup>
+              <optgroup label="Estados Unidos">
+                <option value="America/Los_Angeles" data-search="los angeles california">Los Ángeles</option>
+                <option value="America/Chicago" data-search="chicago houston dallas texas">Houston / Dallas / Chicago</option>
+                <option value="America/New_York" data-search="new york miami florida">Nueva York / Miami</option>
+              </optgroup>
+              <optgroup label="Europa">
+                <option value="Europe/Madrid" data-search="madrid españa spain barcelona">España</option>
+                <option value="Europe/London" data-search="london londres uk reino unido">Reino Unido</option>
+              </optgroup>
+              <optgroup label="India">
+                <option value="Asia/Kolkata" data-search="india vrindavan mathura delhi kolkata">India (Vṛndāvan)</option>
+              </optgroup>
+            </select>
+          </div>
           <button class="btn btn-primary" onclick="downloadCalendar()">
             Descargar Calendario
           </button>
@@ -545,9 +641,50 @@
 
     function downloadCalendar() {
       const tz = document.getElementById('city').value;
+      if (!tz) {
+        alert('Por favor selecciona una ciudad');
+        return;
+      }
       const url = `${API_BASE}/calendar.ics?tz=${encodeURIComponent(tz)}`;
       window.open(url, '_blank');
     }
+
+    // Buscador de ciudades
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('city-search');
+      const select = document.getElementById('city');
+      const options = Array.from(select.querySelectorAll('option'));
+      const optgroups = Array.from(select.querySelectorAll('optgroup'));
+
+      searchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+        if (!query) {
+          // Mostrar todo
+          optgroups.forEach(og => og.style.display = '');
+          options.forEach(opt => opt.style.display = '');
+          return;
+        }
+
+        options.forEach(option => {
+          const text = option.textContent.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+          const searchData = (option.dataset.search || '').toLowerCase();
+          const matches = text.includes(query) || searchData.includes(query);
+          option.style.display = matches ? '' : 'none';
+        });
+
+        // Ocultar optgroups vacíos
+        optgroups.forEach(og => {
+          const visibleOptions = og.querySelectorAll('option:not([style*="display: none"])');
+          og.style.display = visibleOptions.length ? '' : 'none';
+        });
+      });
+
+      // Seleccionar primera opción por defecto
+      if (options.length > 0) {
+        options[0].selected = true;
+      }
+    });
   </script>
 </body>
 </html>
