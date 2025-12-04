@@ -341,8 +341,15 @@
       margin: 6px 0;
     }
 
-    .calendar-url {
+    .calendar-url-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       margin-top: 12px;
+    }
+
+    .calendar-url {
+      flex: 1;
       padding: 10px;
       background: white;
       border-radius: 6px;
@@ -350,6 +357,53 @@
       word-break: break-all;
       color: var(--color-text-light);
       border: 1px solid #eee;
+    }
+
+    .copy-btn {
+      position: relative;
+      background: transparent;
+      border: none;
+      padding: 8px;
+      cursor: pointer;
+      color: var(--color-text-light);
+      border-radius: 6px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .copy-btn:hover {
+      background: var(--color-cream);
+      color: var(--color-primary);
+    }
+
+    .copy-btn svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+
+    .copy-tooltip {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-text);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      margin-bottom: 5px;
+    }
+
+    .copy-btn:hover .copy-tooltip {
+      opacity: 1;
+    }
+
+    .copy-tooltip.copied {
+      opacity: 1;
     }
 
     /* Reverencias */
@@ -552,7 +606,7 @@
           <div class="hint" data-i18n="whatsapp_hint">Guarda este número y envía un mensaje</div>
         </div>
 
-        <a href="https://wa.me/19803725205?text=Hola" class="btn btn-whatsapp" target="_blank" data-i18n="whatsapp_btn">
+        <a href="https://wa.me/19803725205?text=Haribol!" class="btn btn-whatsapp" target="_blank" data-i18n="whatsapp_btn">
           Abrir WhatsApp
         </a>
 
@@ -585,8 +639,15 @@
             <li><strong>iPhone:</strong> <span data-i18n="instr_iphone">Ajustes → Calendario → Añadir suscripción</span></li>
             <li><strong>Outlook:</strong> <span data-i18n="instr_outlook">Suscribirse desde la web</span></li>
           </ol>
-          <div class="calendar-url">
-            https://ekadasi-api.bhaktilatam.com/calendar.ics?tz=America/Mexico_City
+          <div class="calendar-url-container">
+            <div class="calendar-url" id="calendar-url">https://ekadasi-api.bhaktilatam.com/calendar.ics?tz=America/Mexico_City</div>
+            <button class="copy-btn" id="copy-url-btn" title="Copiar URL">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span class="copy-tooltip" id="copy-tooltip">Copiar</span>
+            </button>
           </div>
         </div>
       </div>
@@ -979,6 +1040,11 @@
         hiddenInput.value = value;
         input.value = label;
         closeDropdown();
+        // Update calendar URL
+        const calendarUrl = document.getElementById('calendar-url');
+        if (calendarUrl) {
+          calendarUrl.textContent = `${API_BASE}/calendar.ics?tz=${encodeURIComponent(value)}`;
+        }
       }
 
       function openDropdown() {
@@ -1032,6 +1098,27 @@
       input.value = firstCity.label;
       hiddenInput.value = firstCity.value;
       renderDropdown();
+
+      // Copy URL button
+      const copyBtn = document.getElementById('copy-url-btn');
+      const copyTooltip = document.getElementById('copy-tooltip');
+      const calendarUrl = document.getElementById('calendar-url');
+
+      if (copyBtn && calendarUrl) {
+        copyBtn.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(calendarUrl.textContent);
+            copyTooltip.textContent = currentLang === 'en' ? 'Copied!' : '¡Copiado!';
+            copyTooltip.classList.add('copied');
+            setTimeout(() => {
+              copyTooltip.textContent = currentLang === 'en' ? 'Copy' : 'Copiar';
+              copyTooltip.classList.remove('copied');
+            }, 2000);
+          } catch (err) {
+            console.error('Failed to copy:', err);
+          }
+        });
+      }
     });
   </script>
 </body>
