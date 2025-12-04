@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ekadasi Calendar - Recordatorios de Ayuno</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .icon { font-size: 64px; margin-bottom: 20px; }
+    h1 { color: #333; margin-bottom: 10px; font-size: 28px; }
+    .subtitle { color: #666; margin-bottom: 30px; font-size: 16px; }
+    .features {
+      text-align: left;
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+    .features h3 { color: #333; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+    .features ul { list-style: none; }
+    .features li { padding: 8px 0; color: #555; display: flex; align-items: center; gap: 10px; }
+    .features li::before { content: "✓"; color: #667eea; font-weight: bold; }
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 14px;
+    }
+    .source {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      font-size: 12px;
+      color: #999;
+    }
+    .source a { color: #667eea; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">🙏</div>
+    <h1>Ekadasi Calendar</h1>
+    <p class="subtitle">Recordatorios de ayuno para practicantes Vaisnavas</p>
+
+    <div class="features">
+      <h3>Funcionalidades</h3>
+      <ul>
+        <li>Notificaciones por WhatsApp un día antes del Ekadasi</li>
+        <li>Horarios precisos de Paran (ruptura de ayuno)</li>
+        <li>Calendario iCal sincronizable con tu móvil</li>
+        <li>Soporte para múltiples zonas horarias</li>
+      </ul>
+    </div>
+
+    <span class="badge">Próximamente</span>
+
+    <div class="source">
+      Datos del calendario: <a href="https://www.purebhakti.com/resources/vaisnava-calendar" target="_blank">Pure Bhakti - Caitanya Pañjikā</a>
+    </div>
+  </div>
+</body>
+</html>
