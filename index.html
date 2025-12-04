@@ -165,6 +165,43 @@
       box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35);
     }
 
+    .btn-telegram {
+      background: #0088cc;
+      color: white;
+    }
+
+    .btn-telegram:hover {
+      box-shadow: 0 4px 15px rgba(0, 136, 204, 0.35);
+    }
+
+    /* Telegram username box */
+    .telegram-username {
+      background: linear-gradient(135deg, #0088cc, #0099dd);
+      color: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .telegram-username .username {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .telegram-username .hint {
+      font-size: 0.85rem;
+      opacity: 0.9;
+      margin-top: 5px;
+    }
+
+    /* Full-width card */
+    .card-full {
+      grid-column: 1 / -1;
+      margin-bottom: 30px;
+    }
+
     .btn-primary {
       background: var(--color-primary);
       color: white;
@@ -596,6 +633,7 @@
       <p class="subtitle" data-i18n="subtitle">Recordatorios de ayuno para practicantes Vaisnavas</p>
     </header>
 
+    <!-- Bots Grid: WhatsApp | Telegram -->
     <div class="main-grid">
       <div class="card">
         <h2 data-i18n="whatsapp_title">Bot de WhatsApp</h2>
@@ -617,38 +655,58 @@
       </div>
 
       <div class="card">
-        <h2 data-i18n="calendar_title">Calendario (.ics)</h2>
-        <p data-i18n="calendar_desc">Suscríbete al calendario de Ekadasis en tu aplicación favorita. Se sincroniza automáticamente.</p>
+        <h2 data-i18n="telegram_title">Bot de Telegram</h2>
+        <p data-i18n="telegram_desc">Recibe recordatorios de Ekadasi directamente en Telegram. Soporte en español e inglés.</p>
 
-        <div class="calendar-form">
-          <label data-i18n="city_label">Tu ciudad:</label>
-          <div class="city-combobox" id="city-combobox">
-            <input type="text" id="city-input" placeholder="Buscar ciudad..." autocomplete="off" readonly>
-            <div class="city-dropdown" id="city-dropdown"></div>
-            <input type="hidden" id="city-value" value="America/Mexico_City">
-          </div>
-          <button class="btn btn-primary" onclick="downloadCalendar()" data-i18n="download_btn">
-            Descargar Calendario
-          </button>
+        <div class="telegram-username">
+          <div class="username">@ekadasi_reminder_bot</div>
+          <div class="hint" data-i18n="telegram_hint">Busca el bot en Telegram</div>
         </div>
 
-        <div class="calendar-instructions">
-          <h4 data-i18n="how_subscribe">Cómo suscribirse</h4>
-          <ol>
-            <li><strong>Google Calendar:</strong> <span data-i18n="instr_google">Añadir calendario → Desde URL</span></li>
-            <li><strong>iPhone:</strong> <span data-i18n="instr_iphone">Ajustes → Calendario → Añadir suscripción</span></li>
-            <li><strong>Outlook:</strong> <span data-i18n="instr_outlook">Suscribirse desde la web</span></li>
-          </ol>
-          <div class="calendar-url-container">
-            <div class="calendar-url" id="calendar-url">https://ekadasi-api.bhaktilatam.com/calendar.ics?tz=America/Mexico_City</div>
-            <button class="copy-btn" id="copy-url-btn" title="Copiar URL">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-              </svg>
-              <span class="copy-tooltip" id="copy-tooltip">Copiar</span>
-            </button>
-          </div>
+        <a href="https://t.me/ekadasi_reminder_bot" class="btn btn-telegram" target="_blank" data-i18n="telegram_btn">
+          Abrir Telegram
+        </a>
+
+        <dl class="commands">
+          <div><dt>/proximo</dt><dd data-i18n="cmd_next_tg">— Ver el próximo Ekadasi</dd></div>
+          <div><dt>/reglas</dt><dd data-i18n="cmd_rules_tg">— Ver reglas de ayuno</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Calendar Section - Full Width -->
+    <div class="card card-full">
+      <h2 data-i18n="calendar_title">Calendario (.ics)</h2>
+      <p data-i18n="calendar_desc">Suscríbete al calendario de Ekadasis en tu aplicación favorita. Se sincroniza automáticamente.</p>
+
+      <div class="calendar-form">
+        <label data-i18n="city_label">Tu ciudad:</label>
+        <div class="city-combobox" id="city-combobox">
+          <input type="text" id="city-input" placeholder="Buscar ciudad..." autocomplete="off" readonly>
+          <div class="city-dropdown" id="city-dropdown"></div>
+          <input type="hidden" id="city-value" value="America/Mexico_City">
+        </div>
+        <button class="btn btn-primary" onclick="downloadCalendar()" data-i18n="download_btn">
+          Descargar Calendario
+        </button>
+      </div>
+
+      <div class="calendar-instructions">
+        <h4 data-i18n="how_subscribe">Cómo suscribirse</h4>
+        <ol>
+          <li><strong>Google Calendar:</strong> <span data-i18n="instr_google">Añadir calendario → Desde URL</span></li>
+          <li><strong>iPhone:</strong> <span data-i18n="instr_iphone">Ajustes → Calendario → Añadir suscripción</span></li>
+          <li><strong>Outlook:</strong> <span data-i18n="instr_outlook">Suscribirse desde la web</span></li>
+        </ol>
+        <div class="calendar-url-container">
+          <div class="calendar-url" id="calendar-url">https://ekadasi-api.bhaktilatam.com/calendar.ics?tz=America/Mexico_City</div>
+          <button class="copy-btn" id="copy-url-btn" title="Copiar URL">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span class="copy-tooltip" id="copy-tooltip">Copiar</span>
+          </button>
         </div>
       </div>
     </div>
@@ -753,6 +811,12 @@
         whatsapp_btn: "Abrir WhatsApp",
         cmd_next: "— Ver el próximo Ekadasi",
         cmd_stop: "— Cancelar suscripción",
+        telegram_title: "Bot de Telegram",
+        telegram_desc: "Recibe recordatorios de Ekadasi directamente en Telegram. Soporte en español e inglés.",
+        telegram_hint: "Busca el bot en Telegram",
+        telegram_btn: "Abrir Telegram",
+        cmd_next_tg: "— Ver el próximo Ekadasi",
+        cmd_rules_tg: "— Ver reglas de ayuno",
         calendar_title: "Calendario (.ics)",
         calendar_desc: "Suscríbete al calendario de Ekadasis en tu aplicación favorita. Se sincroniza automáticamente.",
         city_label: "Tu ciudad:",
@@ -818,6 +882,12 @@
         whatsapp_btn: "Open WhatsApp",
         cmd_next: "— See next Ekadasi",
         cmd_stop: "— Unsubscribe",
+        telegram_title: "Telegram Bot",
+        telegram_desc: "Receive Ekadasi reminders directly on Telegram. Spanish and English support.",
+        telegram_hint: "Search for the bot on Telegram",
+        telegram_btn: "Open Telegram",
+        cmd_next_tg: "— See next Ekadasi",
+        cmd_rules_tg: "— See fasting rules",
         calendar_title: "Calendar (.ics)",
         calendar_desc: "Subscribe to the Ekadasi calendar in your favorite app. Syncs automatically.",
         city_label: "Your city:",
